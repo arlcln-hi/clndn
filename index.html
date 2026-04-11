@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File d'attente</title>
+    <style>
+        :root {
+            --bg: #efefef;
+            --card: #ffffff;
+            --text: #2d2e35;
+            --muted: #6d6f76;
+            --line: #e2e2e2;
+            --accent: #8f3faa;
+            --blue: #2d66da;
+            --blue-dark: #1e4aa9;
+            --border: #1e86c8;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 12px;
+            background: var(--bg);
+            font-family: "Avenir Next", "Montserrat", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page {
+            width: min(620px, calc(100vw - 24px));
+            aspect-ratio: 1 / 1;
+            margin: 0 auto;
+            background: var(--card);
+            border: 1px solid #dedede;
+            border-radius: 18px;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, .14);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .top-area {
+            padding: 34px 16px 16px;
+            text-align: center;
+        }
+
+        .icon-wrap {
+            width: 92px;
+            height: 52px;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: .1px;
+            color: #2f3140;
+        }
+
+        .subtitle {
+            margin: 10px 0 30px;
+            font-size: 14px;
+            color: #71737a;
+            line-height: 1.45;
+            font-weight: 400;
+        }
+
+        .progress-shell {
+            width: 100%;
+            position: relative;
+            margin: 0 auto 12px;
+            padding: 0;
+        }
+
+        .progress-track {
+            height: 18px;
+            width: 100%;
+            border-radius: 999px;
+            background: linear-gradient(180deg, #eeeeee 0%, #dddddd 100%);
+            border: 1px solid #d2d2d2;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, .16), 0 1px 0 rgba(255, 255, 255, .8);
+            position: relative;
+            overflow: visible;
+        }
+
+        .knob {
+            position: absolute;
+            top: 50%;
+            left: 0%;
+            width: 20px;
+            height: 20px;
+            transform: translate(-2px, -50%);
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 35% 35%, rgba(255,255,255,.95) 0 12%, rgba(255,255,255,.18) 13% 20%, transparent 21%),
+                radial-gradient(circle at 40% 40%, #5f8df0 0%, #346cdb 55%, #2559c0 100%);
+            box-shadow: inset 0 1px 2px rgba(255,255,255,.45), inset 0 -1px 2px rgba(0,0,0,.18), 0 1px 1px rgba(0,0,0,.18);
+            border: 1px solid rgba(42,76,160,.65);
+            transition: left 900ms linear;
+            z-index: 2;
+        }
+
+        .queue-info {
+            font-size: 14px;
+            color: #65676e;
+            margin: 8px 0 4px;
+            font-weight: 400;
+        }
+
+        .queue-info strong {
+            color: #2f3138;
+            font-weight: 700;
+        }
+
+        .eta {
+            margin: 0;
+            font-size: 17px;
+            font-weight: 700;
+            color: #2e3037;
+        }
+
+        .eta .accent {
+            color: var(--accent);
+        }
+
+        .divider {
+            height: 1px;
+            background: #ececec;
+            margin: 28px -16px 10px;
+        }
+
+        .notice {
+            margin: 0 auto;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 14px 16px 15px;
+            text-align: left;
+            color: #23242a;
+            font-size: 12px;
+            line-height: 1.48;
+            font-weight: 700;
+        }
+
+        .footer {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 24px;
+            padding: 0 22px;
+            font-size: 11px;
+            color: #51535b;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .footer .label {
+            font-weight: 500;
+        }
+
+        .footer .id {
+            font-weight: 400;
+        }
+
+        @media (max-width: 520px) {
+            .page {
+                aspect-ratio: auto;
+                min-height: auto;
+                border-radius: 14px;
+            }
+
+            h1 {
+                font-size: 19px;
+            }
+
+            .eta {
+                font-size: 15px;
+            }
+
+            .footer {
+                position: static;
+                padding: 22px 16px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="top-area">
+            <div class="icon-wrap" aria-hidden="true">
+                <svg viewBox="0 0 120 70" width="92" height="52">
+                    <g fill="none" stroke="#2f3138" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="60" cy="35" r="22"></circle>
+                        <path d="M52 8h16"></path>
+                        <path d="M44 14l-6-6"></path>
+                        <path d="M76 14l6-6"></path>
+                        <path d="M60 20v16"></path>
+                        <path d="M60 36l8 7"></path>
+                        <path d="M44 47l-4 8"></path>
+                        <path d="M76 47l4 8"></path>
+                        <path d="M14 35h20"></path>
+                        <circle cx="10" cy="35" r="6"></circle>
+                        <path d="M86 35h20"></path>
+                        <circle cx="110" cy="35" r="6" fill="#2f3138"></circle>
+                    </g>
+                    <g fill="#2f3138">
+                        <circle cx="60" cy="35" r="1.5"></circle>
+                        <circle cx="60" cy="19" r="1.7"></circle>
+                        <circle cx="71" cy="24" r="1.7"></circle>
+                        <circle cx="76" cy="35" r="1.7"></circle>
+                        <circle cx="71" cy="46" r="1.7"></circle>
+                        <circle cx="60" cy="51" r="1.7"></circle>
+                        <circle cx="49" cy="46" r="1.7"></circle>
+                        <circle cx="44" cy="35" r="1.7"></circle>
+                        <circle cx="49" cy="24" r="1.7"></circle>
+                    </g>
+                </svg>
+            </div>
+
+            <h1>Vous êtes maintenant en attente du 17 octobre.</h1>
+            <p class="subtitle">Lorsque ce sera votre tour, vous allez pleurer votre race de joie.</p>
+
+            <div class="progress-shell">
+                <div class="progress-track">
+                    <div class="knob" id="knob"></div>
+                </div>
+            </div>
+
+            <p class="queue-info">Visiteurs qui ont eu plus de chances que vous&nbsp;: <strong id="visitors">0</strong></p>
+            <p class="eta">Votre temps d'attente est estimé à&nbsp;: <span class="accent" id="countdown">0 mois (0 jours)</span></p>
+
+            <div class="divider"></div>
+
+            <div class="notice">
+                Veuillez noter que vous pouvez jouer au loto. Vous êtes un crack! Venez à moi que je vous caresse le dos.
+            </div>
+        </div>
+
+        <div class="footer">
+            <span class="label">ID de file d'attente</span>
+            <span class="id">ef1df329-3ebf-44cc-8f8e-07a5cffb5288</span>
+        </div>
+    </div>
+
+    <script>
+        const knob = document.getElementById('knob');
+        const countdown = document.getElementById('countdown');
+
+
+        const startDate = new Date('2026-04-10T00:00:00');
+        const targetDate = new Date('2026-10-17T00:00:00');
+
+
+        function startOfDay(date) {
+            const d = new Date(date);
+            d.setHours(0, 0, 0, 0);
+            return d;
+        }
+
+        function addMonths(date, months) {
+            const d = new Date(date);
+            const day = d.getDate();
+            d.setMonth(d.getMonth() + months);
+            if (d.getDate() < day) {
+                d.setDate(0);
+            }
+            return d;
+        }
+
+        function diffMonthsAndDays(fromDate, toDate) {
+            const from = new Date(fromDate);
+            const to = new Date(toDate);
+
+            if (from >= to) {
+                return { months: 0, days: 0 };
+            }
+
+            let months = 0;
+            let cursor = new Date(from);
+
+            while (true) {
+                const next = addMonths(cursor, 1);
+                if (next <= to) {
+                    months += 1;
+                    cursor = next;
+                } else {
+                    break;
+                }
+            }
+
+            const msPerDay = 24 * 60 * 60 * 1000;
+            const days = Math.floor((startOfDay(to) - startOfDay(cursor)) / msPerDay);
+
+            return { months, days };
+        }
+
+        function updateProgress() {
+            const now = new Date();
+            const totalMs = Math.max(targetDate - startDate, 1);
+            const elapsedMs = Math.min(Math.max(now - startDate, 0), totalMs);
+            const progress = (elapsedMs / totalMs) * 100;
+            knob.style.left = `${progress}%`;
+
+            const remainingMs = Math.max(targetDate - now, 0);
+            const remainingDays = Math.ceil(remainingMs / (24 * 60 * 60 * 1000));
+            const parts = diffMonthsAndDays(now, targetDate);
+            countdown.textContent = `${parts.months} mois (${remainingDays} jours)`;
+
+            const progressedVisitors = Math.round((elapsedMs / totalMs) * startVisitors);
+            const remainingVisitors = Math.max(startVisitors - progressedVisitors, 0);
+            visitors.textContent = new Intl.NumberFormat('fr-FR').format(remainingVisitors);
+        }
+
+        updateProgress();
+        setInterval(updateProgress, 1000);
+    </script>
+</body>
+</html>
