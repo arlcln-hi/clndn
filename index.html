@@ -265,11 +265,7 @@
             </div>
 
             <p class="queue-info">Visiteurs qui ont eu plus de chances que vous&nbsp;: <strong>0</strong></p>
-             <div class="stat-box">
-                 <p class="stat-title">Votre temps d'attente est estimé à</p>
-                 <p class="stat-value accent" id="countdown">0 mois (0 jours)</p>
-                 <div class="mini-note">Décompte en direct jusqu'au 17 octobre 2026.</div>
-             </div>
+            <p class="eta">Votre temps d'attente est estimé à&nbsp;: <span class="accent" id="countdown">0 mois (0 jours)</span></p>
 
             <div class="divider"></div>
 
@@ -284,140 +280,121 @@
         </div>
     </div>
 
+    
     <script>
+        const startDate = new Date('2026-04-10T00:00:00');
+        const targetDate = new Date('2026-10-17T00:00:00');
+        const startVisitors = 1234;
 
-        const fill = document.getElementById('fill');
-const knob = document.getElementById('knob');
-const countdown = document.getElementById('countdown');
-const visitors = document.getElementById('visitors');
+        const knob = document.querySelector('.knob');
+        const countdown = document.getElementById('countdown');
+        const visitors = document.getElementById('visitors');
+        const songTitle = document.getElementById('songTitle');
+        const songMeta = document.getElementById('songMeta');
+        const songAnecdote = document.getElementById('songAnecdote');
+        const songLink = document.getElementById('songLink');
 
-const startDate = new Date('2026-04-10T00:00:00');
-const targetDate = new Date('2026-10-17T00:00:00');
-const startVisitors = 1757543;
-
-function startOfDay(date) {
-    const d = new Date(date);
-    d.setHours(0, 0, 0, 0);
-    return d;
-}
-
-function addMonths(date, months) {
-    const d = new Date(date);
-    const originalDay = d.getDate();
-    d.setMonth(d.getMonth() + months);
-    if (d.getDate() < originalDay) {
-        d.setDate(0);
-    }
-    return d;
-}
-
-function diffMonthsAndDays(fromDate, toDate) {
-    const from = new Date(fromDate);
-    const to = new Date(toDate);
-
-    if (from >= to) {
-        return { months: 0, days: 0 };
-    }
-
-    let months = 0;
-    let cursor = new Date(from);
-
-    while (true) {
-        const next = addMonths(cursor, 1);
-        if (next <= to) {
-            months += 1;
-            cursor = next;
-        } else {
-            break;
+        function startOfDay(date) {
+            const d = new Date(date);
+            d.setHours(0, 0, 0, 0);
+            return d;
         }
-    }
 
-    const msPerDay = 24 * 60 * 60 * 1000;
-    const days = Math.floor((startOfDay(to) - startOfDay(cursor)) / msPerDay);
-    return { months, days };
-}
+        function addMonths(date, months) {
+            const d = new Date(date);
+            const day = d.getDate();
+            d.setMonth(d.getMonth() + months);
+            if (d.getDate() < day) {
+                d.setDate(0);
+            }
+            return d;
+        }
 
-function clamp(value, min, max) {
-    return Math.min(Math.max(value, min), max);
-}
+        function diffMonthsAndDays(fromDate, toDate) {
+            const from = new Date(fromDate);
+            const to = new Date(toDate);
 
-function updateProgress() {
-    const now = new Date();
-    const totalMs = Math.max(targetDate - startDate, 1);
-    const elapsedMs = clamp(now - startDate, 0, totalMs);
-    const progress = (elapsedMs / totalMs) * 100;
-
-    fill.style.width = `${progress}%`;
-    knob.style.left = `${progress}%`;
-
-    const remainingMs = Math.max(targetDate - now, 0);
-    const remainingDays = Math.ceil(remainingMs / (24 * 60 * 60 * 1000));
-    const parts = diffMonthsAndDays(now, targetDate);
-    countdown.textContent = `${parts.months} mois (${remainingDays} jours)`;
-
-    const progressedVisitors = Math.round((elapsedMs / totalMs) * startVisitors);
-    const remainingVisitors = Math.max(startVisitors - progressedVisitors, 0);
-    visitors.textContent = new Intl.NumberFormat('fr-FR').format(remainingVisitors);
-}
-
-updateProgress();
-setInterval(updateProgress, 1000);
-        (function () {
-            function formatDateFr(dateStr) {
-                var parts = dateStr.split('-');
-                var d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
-                return d.toLocaleDateString('fr-FR', {
-                    day: '2-digit',
-                    month: 'long',
-                    year: 'numeric'
-                });
+            if (from >= to) {
+                return { months: 0, days: 0 };
             }
 
-            function renderSong(song) {
-                var el = document.getElementById('songOfDay');
-                if (!el) return;
+            let months = 0;
+            let cursor = new Date(from);
 
-                if (!song) {
-                    el.innerHTML = '<div class="song-of-day-label">🎵 Chanson du jour</div>' +
-                        '<p class="song-of-day-anecdote">Aucune chanson trouvée pour la date du jour.</p>';
-                    return;
+            while (true) {
+                const next = addMonths(cursor, 1);
+                if (next <= to) {
+                    months += 1;
+                    cursor = next;
+                } else {
+                    break;
                 }
-
-                el.innerHTML =
-                    '<div class="song-of-day-label">🎵 Chanson du jour</div>' +
-                    '<p class="song-of-day-title">' + song.titre + '</p>' +
-                    '<p class="song-of-day-meta"><strong>Album :</strong> ' + song.album + '</p>' +
-                    '<p class="song-of-day-date"><strong>Date :</strong> ' + formatDateFr(song.date) + '</p>' +
-                    '<p class="song-of-day-anecdote">' + song.anecdote + '</p>' +
-                    '<div class="song-of-day-link"><a href="' + song.lien + '" target="_blank" rel="noopener">▶ Écouter ou regarder</a></div>';
             }
 
-            function getTodayString() {
-                var d = new Date();
-                return d.getFullYear() + '-'
-                    + String(d.getMonth() + 1).padStart(2, '0') + '-'
-                    + String(d.getDate()).padStart(2, '0');
+            const msPerDay = 24 * 60 * 60 * 1000;
+            const days = Math.floor((startOfDay(to) - startOfDay(cursor)) / msPerDay);
+
+            return { months, days };
+        }
+
+        function updateProgress() {
+            const now = new Date();
+            const totalMs = Math.max(targetDate - startDate, 1);
+            const elapsedMs = Math.min(Math.max(now - startDate, 0), totalMs);
+            const progress = (elapsedMs / totalMs) * 100;
+            if (knob) knob.style.left = `${progress}%`;
+
+            const remainingMs = Math.max(targetDate - now, 0);
+            const remainingDays = Math.ceil(remainingMs / (24 * 60 * 60 * 1000));
+            const parts = diffMonthsAndDays(now, targetDate);
+            if (countdown) {
+                countdown.textContent = `${parts.months} mois (${remainingDays} jours)`;
             }
 
-            fetch('./chansons_celine.json')
-                .then(function (response) {
-                    if (!response.ok) {
-                        throw new Error('Impossible de charger le fichier JSON');
+            const progressedVisitors = Math.round((elapsedMs / totalMs) * startVisitors);
+            const remainingVisitors = Math.max(startVisitors - progressedVisitors, 0);
+            if (visitors) {
+                visitors.textContent = new Intl.NumberFormat('fr-FR').format(remainingVisitors);
+            }
+        }
+
+        async function loadSongOfDay() {
+            try {
+                const response = await fetch('./chansons_celine.json');
+                const songs = await response.json();
+
+                const today = new Date();
+                const yyyy = today.getFullYear();
+                const mm = String(today.getMonth() + 1).padStart(2, '0');
+                const dd = String(today.getDate()).padStart(2, '0');
+                const todayStr = `${yyyy}-${mm}-${dd}`;
+
+                const song = songs.find(item => item.date === todayStr) || songs[0];
+
+                if (!song) return;
+
+                if (songTitle) songTitle.textContent = song.titre || '';
+                if (songMeta) {
+                    const meta = [song.album, song.date].filter(Boolean).join(' • ');
+                    songMeta.textContent = meta;
+                }
+                if (songAnecdote) songAnecdote.textContent = song.anecdote || '';
+                if (songLink) {
+                    if (song.lien) {
+                        songLink.innerHTML = `<a href="${song.lien}" target="_blank" rel="noopener noreferrer">Écouter ou regarder</a>`;
+                    } else {
+                        songLink.textContent = '';
                     }
-                    return response.json();
-                })
-                .then(function (songs) {
-                    var todayStr = getTodayString();
-                    var song = songs.find(function (s) { return s.date === todayStr; }) || songs[0];
-                    renderSong(song);
-                })
-                .catch(function () {
-                    var el = document.getElementById('songOfDay');
-                    if (!el) return;
-                    el.innerHTML = '<div class="song-of-day-label">🎵 Chanson du jour</div>' +
-                        '<p class="song-of-day-anecdote">Impossible de charger <code>chansons_celine.json</code>. Vérifie que le fichier est dans le même dossier que cette page.</p>';
-                });
-        })();
+                }
+            } catch (error) {
+                console.error('Erreur lors du chargement du JSON :', error);
+            }
+        }
+
+        updateProgress();
+        setInterval(updateProgress, 1000);
+        loadSongOfDay();
     </script>
+
 </body>
 </html>
