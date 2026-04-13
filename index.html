@@ -265,7 +265,11 @@
             </div>
 
             <p class="queue-info">Visiteurs qui ont eu plus de chances que vous&nbsp;: <strong>0</strong></p>
-            <p class="eta">Votre temps d'attente est estimé à&nbsp;: <span class="accent" id="countdown">0 mois (0 jours)</span></p>
+             <div class="stat-box">
+                 <p class="stat-title">Votre temps d'attente est estimé à</p>
+                 <p class="stat-value accent" id="countdown">0 mois (0 jours)</p>
+                 <div class="mini-note">Décompte en direct jusqu'au 17 octobre 2026.</div>
+             </div>
 
             <div class="divider"></div>
 
@@ -281,6 +285,83 @@
     </div>
 
     <script>
+
+        const fill = document.getElementById('fill');
+const knob = document.getElementById('knob');
+const countdown = document.getElementById('countdown');
+const visitors = document.getElementById('visitors');
+
+const startDate = new Date('2026-04-10T00:00:00');
+const targetDate = new Date('2026-10-17T00:00:00');
+const startVisitors = 1757543;
+
+function startOfDay(date) {
+    const d = new Date(date);
+    d.setHours(0, 0, 0, 0);
+    return d;
+}
+
+function addMonths(date, months) {
+    const d = new Date(date);
+    const originalDay = d.getDate();
+    d.setMonth(d.getMonth() + months);
+    if (d.getDate() < originalDay) {
+        d.setDate(0);
+    }
+    return d;
+}
+
+function diffMonthsAndDays(fromDate, toDate) {
+    const from = new Date(fromDate);
+    const to = new Date(toDate);
+
+    if (from >= to) {
+        return { months: 0, days: 0 };
+    }
+
+    let months = 0;
+    let cursor = new Date(from);
+
+    while (true) {
+        const next = addMonths(cursor, 1);
+        if (next <= to) {
+            months += 1;
+            cursor = next;
+        } else {
+            break;
+        }
+    }
+
+    const msPerDay = 24 * 60 * 60 * 1000;
+    const days = Math.floor((startOfDay(to) - startOfDay(cursor)) / msPerDay);
+    return { months, days };
+}
+
+function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+}
+
+function updateProgress() {
+    const now = new Date();
+    const totalMs = Math.max(targetDate - startDate, 1);
+    const elapsedMs = clamp(now - startDate, 0, totalMs);
+    const progress = (elapsedMs / totalMs) * 100;
+
+    fill.style.width = `${progress}%`;
+    knob.style.left = `${progress}%`;
+
+    const remainingMs = Math.max(targetDate - now, 0);
+    const remainingDays = Math.ceil(remainingMs / (24 * 60 * 60 * 1000));
+    const parts = diffMonthsAndDays(now, targetDate);
+    countdown.textContent = `${parts.months} mois (${remainingDays} jours)`;
+
+    const progressedVisitors = Math.round((elapsedMs / totalMs) * startVisitors);
+    const remainingVisitors = Math.max(startVisitors - progressedVisitors, 0);
+    visitors.textContent = new Intl.NumberFormat('fr-FR').format(remainingVisitors);
+}
+
+updateProgress();
+setInterval(updateProgress, 1000);
         (function () {
             function formatDateFr(dateStr) {
                 var parts = dateStr.split('-');
