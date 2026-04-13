@@ -362,37 +362,43 @@
             }
         }
 
-       async function loadSongOfDay() {
-        try {
-            const response = await fetch('./chansons_celine.json');
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-            const songs = await response.json();
-
-            const today = new Date();
-            const yyyy = today.getFullYear();
-            const mm = String(today.getMonth() + 1).padStart(2, '0');
-            const dd = String(today.getDate()).padStart(2, '0');
-            const todayStr = `${yyyy}-${mm}-${dd}`;
-
-            const song = songs.find(item => item.date === todayStr) || songs[0];
-            if (!song) return;
-
-            if (songTitle) songTitle.textContent = song.titre || '';
-            if (songMeta) {
-                songMeta.textContent = [song.artiste, song.album, song.date].filter(Boolean).join(' • ');
-            }
-            if (songAnecdote) songAnecdote.textContent = song.anecdote || '';
-            if (songLink) {
-                songLink.innerHTML = song.lien
-                    ? `<a href="${song.lien}" target="_blank" rel="noopener noreferrer">Écouter ou regarder</a>`
-                    : '';
-            }
-        } catch (error) {
-            console.error('Erreur lors du chargement de la chanson du jour :', error);
-            if (songTitle) songTitle.textContent = 'Impossible de charger la chanson du jour';
+async function loadSongOfDay() {
+    try {
+        const response = await fetch('./chansons_celine.json');
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
         }
+
+        const songs = await response.json();
+
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        const todayStr = `${yyyy}-${mm}-${dd}`;
+
+        const song = songs.find(item => item.date === todayStr) || songs[0];
+
+        if (!song) return;
+
+        if (songTitle) songTitle.textContent = song.titre || '';
+        if (songMeta) {
+            const meta = [song.album, song.date].filter(Boolean).join(' • ');
+            songMeta.textContent = meta;
+        }
+        if (songAnecdote) songAnecdote.textContent = song.anecdote || '';
+        if (songLink) {
+            if (song.lien) {
+                songLink.innerHTML = `<a href="${song.lien}" target="_blank" rel="noopener noreferrer">Écouter ou regarder</a>`;
+            } else {
+                songLink.textContent = '';
+            }
+        }
+    } catch (error) {
+        console.error('Erreur lors du chargement de la chanson du jour :', error);
+        if (songTitle) songTitle.textContent = 'Impossible de charger la chanson du jour';
     }
+}
 
     updateProgress();
     setInterval(updateProgress, 1000);
