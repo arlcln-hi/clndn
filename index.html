@@ -336,7 +336,7 @@
             margin: 0 0 20px;
             background: var(--bg);
             border: none;
-            border-radius: 18px;
+            border-radius: 20px;
             padding: 16px;
             text-align: center;
             font-weight: 400;
@@ -392,11 +392,13 @@
             align-items: flex-start;
             justify-content: space-between;
             text-align: left;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
+            padding: 0 4px;
         }
 
         .game-card-header .setlist-label {
             margin: 0;
+            font-size: 12px;
         }
 
         .game-streak {
@@ -404,22 +406,27 @@
             font-weight: 700;
             color: var(--blue);
             white-space: nowrap;
+            background: rgba(45, 102, 218, 0.1);
+            padding: 4px 10px;
+            border-radius: 999px;
         }
 
         .game-inner {
             background: #fff;
-            border-radius: 14px;
-            padding: 22px 18px 18px;
+            border-radius: 16px;
+            padding: 24px 20px 20px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 20px rgba(0, 0, 0, 0.06);
         }
 
         .game-intro {
-            font-size: 14px;
+            font-size: 13.5px;
             color: var(--muted);
             margin: 0 0 16px;
+            letter-spacing: .01em;
         }
 
         .game-song-title {
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--accent);
             margin: 0 0 16px;
@@ -429,7 +436,7 @@
             display: flex;
             gap: 10px;
             justify-content: center;
-            margin: 0 0 18px;
+            margin: 0 0 20px;
         }
 
         .game-listen-btn {
@@ -442,6 +449,7 @@
             color: #fff;
             border-radius: 999px;
             padding: 10px 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
         }
 
         .game-listen-btn.spotify {
@@ -453,27 +461,28 @@
         }
 
         .game-listen-btn.disabled {
-            opacity: .45;
+            opacity: .4;
+            box-shadow: none;
             pointer-events: none;
         }
 
         .game-divider {
-            border-top: 1px dashed #d6d6d6;
+            border-top: 1px dashed #e2e2e2;
             margin: 0 0 20px;
         }
 
         .game-blank-progress {
             display: flex;
             justify-content: center;
-            gap: 6px;
-            margin: 0 0 14px;
+            gap: 7px;
+            margin: 0 0 16px;
         }
 
         .game-blank-dot {
-            width: 12px;
-            height: 12px;
+            width: 11px;
+            height: 11px;
             border-radius: 50%;
-            background: #e2e2e2;
+            background: #e8e8e8;
             transition: transform 250ms ease, background 250ms ease;
         }
 
@@ -488,9 +497,111 @@
             100% { transform: scale(1) rotate(0deg); }
         }
 
+        .game-blank-count {
+            text-align: center;
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin: 0 0 6px;
+        }
+
+        .karaoke-scroll {
+            min-height: 110px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 7px;
+            margin: 0 0 22px;
+            padding: 6px 4px;
+        }
+
+        .karaoke-line {
+            text-align: center;
+            transition: opacity 350ms ease, transform 350ms ease, font-size 350ms ease, color 350ms ease;
+        }
+
+        .karaoke-line.small {
+            font-size: 12.5px;
+            color: var(--muted);
+            opacity: .65;
+        }
+
+        .karaoke-line.current {
+            font-size: 16.5px;
+            line-height: 2;
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .karaoke-line.entering {
+            opacity: 0;
+            transform: translateY(6px);
+        }
+
+        .game-blank-input {
+            display: inline-block;
+            width: 92px;
+            font-size: 16px;
+            font-weight: 700;
+            text-align: center;
+            border: none;
+            border-bottom: 2px solid var(--blue);
+            background: rgba(45, 102, 218, 0.06);
+            border-radius: 4px 4px 0 0;
+            color: var(--blue);
+            padding: 2px 4px 3px;
+            margin: 0 3px;
+        }
+
+        .game-blank-input::placeholder {
+            color: var(--blue);
+            opacity: .5;
+        }
+
+        .game-blank-input:focus {
+            outline: none;
+            background: rgba(45, 102, 218, 0.1);
+        }
+
+        .game-blank-input.correct {
+            color: #12833a;
+            border-color: #12833a;
+            background: rgba(18, 131, 58, 0.08);
+        }
+
+        .game-blank-input.wrong {
+            color: #c31530;
+            border-color: #c31530;
+            background: rgba(195, 21, 48, 0.08);
+            animation: game-shake 300ms;
+        }
+
+        @keyframes game-shake {
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+
+        .game-actions {
+            margin: 0 0 14px;
+        }
+
         .game-check-btn {
             position: relative;
             overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            background: var(--accent);
+            border: none;
+            border-radius: 999px;
+            padding: 12px 32px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(143, 63, 170, 0.3);
         }
 
         .game-check-btn::after {
@@ -510,144 +621,47 @@
             100% { left: 130%; }
         }
 
-        .game-blank-count {
-            text-align: center;
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--accent);
-            margin: 0 0 4px;
-        }
-
-        .karaoke-scroll {
-            min-height: 110px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 6px;
-            margin: 0 0 22px;
-        }
-
-        .karaoke-line {
-            text-align: center;
-            transition: opacity 350ms ease, transform 350ms ease, font-size 350ms ease, color 350ms ease;
-        }
-
-        .karaoke-line.small {
-            font-size: 12.5px;
-            color: var(--muted);
-            opacity: .7;
-        }
-
-        .karaoke-line.current {
-            font-size: 16px;
-            line-height: 2;
-            color: var(--text);
-            font-weight: 700;
-        }
-
-        .karaoke-line.entering {
-            opacity: 0;
-            transform: translateY(6px);
-        }
-
-        .game-blank-input {
-            display: inline-block;
-            width: 90px;
-            font-size: 16px;
-            font-weight: 700;
-            text-align: center;
-            border: none;
-            border-bottom: 2px solid var(--blue);
-            background: transparent;
-            color: var(--blue);
-            padding: 0 2px 3px;
-            margin: 0 3px;
-        }
-
-        .game-blank-input::placeholder {
-            color: var(--blue);
-            opacity: .6;
-        }
-
-        .game-blank-input:focus {
-            outline: none;
-        }
-
-        .game-blank-input.correct {
-            color: #12833a;
-            border-color: #12833a;
-        }
-
-        .game-blank-input.wrong {
-            color: #c31530;
-            border-color: #c31530;
-            animation: game-shake 300ms;
-        }
-
-        @keyframes game-shake {
-            25% { transform: translateX(-4px); }
-            75% { transform: translateX(4px); }
-        }
-
-        .game-actions {
-            margin: 0 0 14px;
-        }
-
-        .game-check-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 15px;
-            font-weight: 700;
-            color: #fff;
-            background: var(--accent);
-            border: none;
-            border-radius: 999px;
-            padding: 12px 30px;
-            cursor: pointer;
-        }
-
         .game-feedback {
             display: block;
             font-size: 13px;
             font-weight: 700;
-            margin: 0 0 6px;
+            margin: 0 0 8px;
             min-height: 16px;
         }
 
         .game-feedback.ok { color: #12833a; }
         .game-feedback.ko { color: #c31530; }
 
-        .game-score {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--accent);
-            margin: 0 0 10px;
-        }
-
         .game-hint {
-            font-size: 12.5px;
+            font-size: 12px;
             color: var(--muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
         }
 
         .game-share-btn {
             display: none;
-            margin-top: 14px;
+            margin-top: 16px;
             font-size: 13px;
             font-weight: 700;
             color: #fff;
             background: #25D366;
             border: none;
             border-radius: 999px;
-            padding: 9px 18px;
+            padding: 10px 20px;
             cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
         }
 
         .game-share-btn.visible { display: inline-block; }
 
         .game-progress {
-            margin: 12px 0 0;
+            margin: 14px 0 0;
             font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .03em;
             color: var(--muted);
             text-align: center;
         }
@@ -663,32 +677,44 @@
 
         .playlist-row {
             display: flex;
-            gap: 8px;
             margin: 0 0 20px;
         }
 
         .playlist-btn {
             flex: 1;
+            min-width: 0;
+            min-height: 44px;
             display: flex;
-            flex-direction: column;
             align-items: center;
+            justify-content: center;
             gap: 6px;
             background: #fff;
-            border-radius: 12px;
-            padding: 12px 6px;
+            border-radius: 999px;
+            padding: 10px 8px;
             text-decoration: none;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .playlist-btn + .playlist-btn {
+            margin-left: 8px;
+        }
+
+        .playlist-btn:active {
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
         }
 
         .playlist-btn-icon {
-            width: 32px;
-            height: 32px;
+            flex: 0 0 auto;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
             background: #1DB954;
             color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 12px;
         }
 
         .playlist-btn-icon.deezer {
@@ -696,14 +722,16 @@
         }
 
         .playlist-btn-icon.apple {
-            background: #17181c;
+            background: #FA2D48;
         }
 
         .playlist-btn-label {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 700;
             color: var(--text);
-            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     </style>
 </head>
