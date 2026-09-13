@@ -518,39 +518,36 @@
             margin: 0 0 4px;
         }
 
-        .game-line-context {
+        .karaoke-scroll {
+            min-height: 110px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 6px;
+            margin: 0 0 22px;
+        }
+
+        .karaoke-line {
             text-align: center;
+            transition: opacity 350ms ease, transform 350ms ease, font-size 350ms ease, color 350ms ease;
+        }
+
+        .karaoke-line.small {
             font-size: 12.5px;
             color: var(--muted);
-            margin: 0 0 6px;
-            opacity: 0;
-            transform: translateY(4px);
-            min-height: 16px;
+            opacity: .7;
         }
 
-        .game-line-context.karaoke-in {
-            animation: karaoke-fade-in 400ms ease-out forwards;
-        }
-
-        @keyframes karaoke-fade-in {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .game-sentence {
+        .karaoke-line.current {
             font-size: 16px;
             line-height: 2;
             color: var(--text);
-            margin: 0 0 6px;
+            font-weight: 700;
+        }
+
+        .karaoke-line.entering {
             opacity: 0;
-            transform: translateY(4px);
-        }
-
-        .game-sentence.karaoke-in {
-            animation: karaoke-fade-in 450ms ease-out forwards;
-        }
-
-        .game-sentence + .game-line-context {
-            margin: 6px 0 22px;
+            transform: translateY(6px);
         }
 
         .game-blank-input {
@@ -764,9 +761,7 @@
                     <div class="game-divider"></div>
                     <p class="game-blank-count" id="gameBlankCount"></p>
                     <div class="game-blank-progress" id="gameBlankProgress"></div>
-                    <p class="game-line-context" id="gamePrevLine"></p>
-                    <p class="game-sentence" id="gameSentence"></p>
-                    <p class="game-line-context" id="gameNextLine"></p>
+                    <div class="karaoke-scroll" id="karaokeScroll"></div>
                     <div class="game-actions">
                         <button class="game-check-btn" id="gameCheckBtn">Valider ✓</button>
                     </div>
@@ -991,12 +986,14 @@ async function loadSongOfDay() {
         async function loadLyricsGame() {
             const titleEl = document.getElementById('gameSongTitle');
             const hintEl = document.getElementById('gameHint');
-            const sentenceEl = document.getElementById('gameSentence');
             const linksEl = document.getElementById('gameListenLinks');
             const checkBtn = document.getElementById('gameCheckBtn');
             const feedbackEl = document.getElementById('gameFeedback');
             const shareBtn = document.getElementById('gameShareBtn');
             const progressEl = document.getElementById('gameProgress');
+            const scrollEl = document.getElementById('karaokeScroll');
+            const progressDotsEl = document.getElementById('gameBlankProgress');
+            const blankCountEl = document.getElementById('gameBlankCount');
 
             renderStreak();
 
@@ -1004,7 +1001,7 @@ async function loadSongOfDay() {
                 const response = await fetch('./paroles_du_jour.json');
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 lyricsGameEntries = (await response.json())
-                    .filter(e => e.phraseTemplate && e.blanks && e.blanks.length > 0);
+                    .filter(e => Array.isArray(e.lines) && e.lines.length > 0);
             } catch (error) {
                 console.error('Erreur lors du chargement du jeu du jour :', error);
                 lyricsGameEntries = [];
@@ -1014,7 +1011,7 @@ async function loadSongOfDay() {
 
             if (!entry) {
                 if (hintEl) hintEl.textContent = 'Aucune chanson configurée pour l\'instant';
-                if (sentenceEl) sentenceEl.textContent = 'Remplis paroles_du_jour.json pour activer le jeu.';
+                if (scrollEl) scrollEl.textContent = 'Remplis paroles_du_jour.json pour activer le jeu.';
                 if (checkBtn) checkBtn.style.display = 'none';
                 return;
             }
@@ -1053,116 +1050,103 @@ async function loadSongOfDay() {
                     : '';
             }
 
-            // 10 points au total par chanson, répartis entre les trous. Répartition
-            // à reste réparti pour que la somme fasse toujours exactement 10, quel
-            // que soit le nombre de trous (ex: 7 trous -> trois valent 2, quatre
-            // valent 1 -> 3*2 + 4*1 = 10, plutôt que 7*floor(10/7) = 7).
-            const blankCount = entry.blanks.length;
-            const baseShare = Math.floor(10 / blankCount);
-            const remainder = 10 % blankCount;
-            const pointsForBlank = (i) => baseShare + (i < remainder ? 1 : 0);
-            let score = 0;
-            let solvedCount = 0;
-            const blankInputs = [];
-            const blankSolved = [];
+            const lines = entry.lines;
 
-            const prevLineEl = document.getElementById('gamePrevLine');
-            const progressDotsEl = document.getElementById('gameBlankProgress');
-            const blankCountEl = document.getElementById('gameBlankCount');
+            // Pool de lignes "à trou" candidates (celles qui ont un blankTemplate +
+            // une blankAnswer dans le JSON). À chaque partie, on en tire au hasard
+            // "blanksPerRound" (3 par défaut) parmi ce pool — les autres lignes
+            // candidates s'affichent normalement, en texte complet.
+            const candidateIndices = [];
+            lines.forEach((l, i) => { if (l.blankTemplate && l.blankAnswer) candidateIndices.push(i); });
+
+            const blanksPerRound = Math.min(entry.blanksPerRound || 3, candidateIndices.length);
+            const shuffled = candidateIndices.slice().sort(() => Math.random() - 0.5);
+            const activeBlankIndices = shuffled.slice(0, blanksPerRound).sort((a, b) => a - b);
+            const activeSet = new Set(activeBlankIndices);
+
+            // 10 points au total par chanson, répartis entre les trous actifs de
+            // cette partie. Répartition à reste réparti pour que la somme fasse
+            // toujours exactement 10, quel que soit le nombre de trous tirés.
+            const blankCount = activeBlankIndices.length;
+            const baseShare = blankCount > 0 ? Math.floor(10 / blankCount) : 0;
+            const remainder = blankCount > 0 ? 10 % blankCount : 0;
+            const pointsForLineIndex = {};
+            activeBlankIndices.forEach((idx, i) => {
+                pointsForLineIndex[idx] = baseShare + (i < remainder ? 1 : 0);
+            });
 
             if (progressDotsEl) {
                 progressDotsEl.innerHTML = '';
-                entry.blanks.forEach(() => {
+                activeBlankIndices.forEach(() => {
                     const dot = document.createElement('div');
                     dot.className = 'game-blank-dot';
                     progressDotsEl.appendChild(dot);
                 });
             }
-            if (blankCountEl) blankCountEl.textContent = `0 / ${entry.blanks.length} trous trouvés`;
-            const nextLineEl = document.getElementById('gameNextLine');
-            if (prevLineEl) prevLineEl.textContent = entry.previousLine || '';
-            if (nextLineEl) nextLineEl.textContent = entry.nextLine || '';
+            if (blankCountEl) blankCountEl.textContent = `0 / ${blankCount} trous trouvés`;
+            if (checkBtn) checkBtn.style.display = 'none';
 
-            // Animation karaoké : la ligne précédente, puis la phrase du jour,
-            // puis la ligne suivante apparaissent l'une après l'autre, comme si
-            // elles défilaient au fil de la chanson.
-            [prevLineEl, sentenceEl, nextLineEl].forEach((el, i) => {
-                if (!el) return;
-                el.classList.remove('karaoke-in');
-                setTimeout(() => el.classList.add('karaoke-in'), i * 350);
-            });
+            let score = 0;
+            let solvedCount = 0;
+            let currentIndex = 0;
+            let advanceTimer = null;
 
-            if (sentenceEl) {
-                sentenceEl.innerHTML = '';
-                const parts = entry.phraseTemplate.split('___');
-                parts.forEach((part, i) => {
-                    sentenceEl.appendChild(document.createTextNode(part));
-                    if (i < parts.length - 1) {
-                        const input = document.createElement('input');
-                        input.className = 'game-blank-input';
-                        input.type = 'text';
-                        input.placeholder = '?';
-                        input.autocomplete = 'off';
-                        const index = blankInputs.length;
-                        blankInputs.push(input);
-                        blankSolved.push(false);
-
-                        // Validation mot par mot : Entrée valide juste ce trou-là,
-                        // sans attendre les autres.
-                        input.addEventListener('keydown', (e) => {
-                            if (e.key === 'Enter') {
-                                e.preventDefault();
-                                checkOneBlank(index);
-                            }
-                        });
-
-                        sentenceEl.appendChild(input);
-                    }
-                });
+            function lineDisplayText(i, { spoilerSafe } = {}) {
+                const line = lines[i];
+                if (!line) return '';
+                if (spoilerSafe && activeSet.has(i)) return line.blankTemplate;
+                return line.text;
             }
 
-            function checkOneBlank(index) {
-                if (blankSolved[index]) return;
-                const input = blankInputs[index];
-                const isCorrect = input.value.trim().toLowerCase() === (entry.blanks[index] || '').trim().toLowerCase();
+            function finishSong() {
+                if (checkBtn) checkBtn.style.display = 'none';
+                if (feedbackEl) feedbackEl.textContent = `Chanson terminée : ${score} / 10 points !`;
+                if (hintEl) hintEl.style.display = 'none';
+                if (titleEl) {
+                    titleEl.textContent = entry.titre || '';
+                    titleEl.style.display = 'block';
+                }
+                if (shareBtn) shareBtn.classList.add('visible');
+                burstConfetti(document.getElementById('lyricsGame'), 24);
+                bumpStreakIfNeeded();
+                renderStreak();
+            }
+
+            function advance() {
+                clearTimeout(advanceTimer);
+                currentIndex += 1;
+                if (currentIndex >= lines.length) {
+                    finishSong();
+                    return;
+                }
+                renderCurrent();
+                if (!activeSet.has(currentIndex)) {
+                    advanceTimer = setTimeout(advance, 2600);
+                }
+            }
+
+            function checkCurrentBlank(input, lineIndex, dotIndex) {
+                const line = lines[lineIndex];
+                const isCorrect = input.value.trim().toLowerCase() === (line.blankAnswer || '').trim().toLowerCase();
 
                 if (isCorrect) {
-                    blankSolved[index] = true;
                     input.classList.remove('wrong');
                     input.classList.add('correct');
                     input.disabled = true;
                     burstConfetti(input, 6);
-                    score += pointsForBlank(index);
+                    score += pointsForLineIndex[lineIndex];
                     solvedCount += 1;
 
-                    if (progressDotsEl && progressDotsEl.children[index]) {
-                        progressDotsEl.children[index].classList.add('done');
+                    if (progressDotsEl && progressDotsEl.children[dotIndex]) {
+                        progressDotsEl.children[dotIndex].classList.add('done');
                     }
-                    if (blankCountEl) {
-                        blankCountEl.textContent = `${solvedCount} / ${blankInputs.length} trous trouvés`;
-                    }
-
+                    if (blankCountEl) blankCountEl.textContent = `${solvedCount} / ${blankCount} trous trouvés`;
                     if (feedbackEl) {
-                        const msg = congratsMessages[Math.floor(Math.random() * congratsMessages.length)];
-                        feedbackEl.textContent = msg;
+                        feedbackEl.textContent = congratsMessages[Math.floor(Math.random() * congratsMessages.length)];
                         feedbackEl.className = 'game-feedback ok';
                     }
-
-                    if (solvedCount === blankInputs.length) {
-                        if (checkBtn) checkBtn.style.display = 'none';
-                        if (feedbackEl) {
-                            feedbackEl.textContent = `Chanson terminée : ${score} / 10 points !`;
-                        }
-                        if (hintEl) hintEl.style.display = 'none';
-                        if (titleEl) {
-                            titleEl.textContent = entry.titre || '';
-                            titleEl.style.display = 'block';
-                        }
-                        if (shareBtn) shareBtn.classList.add('visible');
-                        burstConfetti(document.getElementById('lyricsGame'), 24);
-                        const newStreak = bumpStreakIfNeeded();
-                        renderStreak();
-                    }
+                    if (checkBtn) checkBtn.style.display = 'none';
+                    setTimeout(advance, 900);
                 } else {
                     input.classList.remove('correct');
                     input.classList.add('wrong');
@@ -1173,14 +1157,64 @@ async function loadSongOfDay() {
                 }
             }
 
-            // Bouton "Valider" : valide tous les trous pas encore résolus d'un coup
-            // (repli pratique pour qui préfère ne pas utiliser Entrée).
-            if (checkBtn) {
-                checkBtn.onclick = () => {
-                    blankInputs.forEach((input, i) => {
-                        if (!blankSolved[i]) checkOneBlank(i);
+            function renderCurrent() {
+                if (!scrollEl) return;
+                scrollEl.innerHTML = '';
+
+                if (currentIndex > 0) {
+                    const prevEl = document.createElement('p');
+                    prevEl.className = 'karaoke-line small entering';
+                    prevEl.textContent = lineDisplayText(currentIndex - 1);
+                    scrollEl.appendChild(prevEl);
+                    requestAnimationFrame(() => prevEl.classList.remove('entering'));
+                }
+
+                const curEl = document.createElement('div');
+                curEl.className = 'karaoke-line current entering';
+
+                if (activeSet.has(currentIndex)) {
+                    const dotIndex = activeBlankIndices.indexOf(currentIndex);
+                    const parts = lines[currentIndex].blankTemplate.split('___');
+                    curEl.appendChild(document.createTextNode(parts[0] || ''));
+
+                    const input = document.createElement('input');
+                    input.className = 'game-blank-input';
+                    input.type = 'text';
+                    input.placeholder = '?';
+                    input.autocomplete = 'off';
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            checkCurrentBlank(input, currentIndex, dotIndex);
+                        }
                     });
-                };
+                    curEl.appendChild(input);
+                    curEl.appendChild(document.createTextNode(parts[1] || ''));
+
+                    if (checkBtn) {
+                        checkBtn.style.display = 'inline-flex';
+                        checkBtn.onclick = () => checkCurrentBlank(input, currentIndex, dotIndex);
+                    }
+                } else {
+                    curEl.textContent = lineDisplayText(currentIndex);
+                    if (checkBtn) checkBtn.style.display = 'none';
+                }
+
+                scrollEl.appendChild(curEl);
+                requestAnimationFrame(() => curEl.classList.remove('entering'));
+
+                if (currentIndex + 1 < lines.length) {
+                    const nextEl = document.createElement('p');
+                    nextEl.className = 'karaoke-line small entering';
+                    nextEl.textContent = lineDisplayText(currentIndex + 1, { spoilerSafe: true });
+                    scrollEl.appendChild(nextEl);
+                    requestAnimationFrame(() => nextEl.classList.remove('entering'));
+                }
+            }
+
+            renderCurrent();
+            if (!activeSet.has(currentIndex)) {
+                advanceTimer = setTimeout(advance, 2600);
             }
 
             if (shareBtn) {

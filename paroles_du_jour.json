@@ -5,19 +5,146 @@
     "artiste": "Céline Dion",
     "spotifyUrl": "",
     "appleMusicUrl": "",
-    "previousLine": "À COMPLÉTER (optionnel) : la ligne juste avant celle du jeu, affichée en petit au-dessus",
-    "phraseTemplate": "À COMPLÉTER : recopie ici les lignes de la chanson qui contiennent tes 7 trous, avec ___ à la place de chaque mot ou groupe de mots à deviner. Un ___ par entrée du tableau blanks ci-dessous, dans le même ordre.",
-    "nextLine": "À COMPLÉTER (optionnel) : la ligne juste après, affichée en petit en dessous",
-    "blanks": [
-      "À COMPLÉTER (trou 1)",
-      "À COMPLÉTER (trou 2)",
-      "À COMPLÉTER (trou 3)",
-      "À COMPLÉTER (trou 4)",
-      "À COMPLÉTER (trou 5)",
-      "À COMPLÉTER (trou 6)",
-      "À COMPLÉTER (trou 7)"
-    ],
-    "hint": "Optionnel : un petit indice si un mot est difficile"
+    "blanksPerRound": 3,
+    "lines": [
+      {
+        "text": "À COMPLÉTER (ligne 1)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 2 complète, sans trou)",
+        "blankTemplate": "À COMPLÉTER (ligne 2 avec ___ à la place du mot à deviner)",
+        "blankAnswer": "À COMPLÉTER (le mot manquant de la ligne 2)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 3)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 4)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 5)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 6 complète, sans trou)",
+        "blankTemplate": "À COMPLÉTER (ligne 6 avec ___ à la place du mot à deviner)",
+        "blankAnswer": "À COMPLÉTER (le mot manquant de la ligne 6)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 7)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 8)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 9)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 10)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 11)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 12)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 13 complète, sans trou)",
+        "blankTemplate": "À COMPLÉTER (ligne 13 avec ___ à la place du mot à deviner)",
+        "blankAnswer": "À COMPLÉTER (le mot manquant de la ligne 13)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 14)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 15)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 16)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 17)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 18)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 19)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 20)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 21)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 22)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 23)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 24)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 25)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 26)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 27)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 28 complète, sans trou)",
+        "blankTemplate": "À COMPLÉTER (ligne 28 avec ___ à la place du mot à deviner)",
+        "blankAnswer": "À COMPLÉTER (le mot manquant de la ligne 28)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 29)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 30)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 31 complète, sans trou)",
+        "blankTemplate": "À COMPLÉTER (ligne 31 avec ___ à la place du mot à deviner)",
+        "blankAnswer": "À COMPLÉTER (le mot manquant de la ligne 31)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 32)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 33)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 34 complète, sans trou)",
+        "blankTemplate": "À COMPLÉTER (ligne 34 avec ___ à la place du mot à deviner)",
+        "blankAnswer": "À COMPLÉTER (le mot manquant de la ligne 34)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 35)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 36 complète, sans trou)",
+        "blankTemplate": "À COMPLÉTER (ligne 36 avec ___ à la place du mot à deviner)",
+        "blankAnswer": "À COMPLÉTER (le mot manquant de la ligne 36)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 37)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 38)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 39)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 40)"
+      },
+      {
+        "text": "À COMPLÉTER (ligne 41)"
+      }
+    ]
   },
   {
     "date": "2026-04-14",
@@ -25,10 +152,7 @@
     "artiste": "Céline Dion",
     "spotifyUrl": "",
     "appleMusicUrl": "",
-    "previousLine": "",
-    "phraseTemplate": "",
-    "nextLine": "",
-    "blanks": [],
-    "hint": ""
+    "blanksPerRound": 3,
+    "lines": []
   }
 ]
