@@ -485,46 +485,67 @@
             position:relative;
             align-items:center;
             vertical-align:middle;
-            margin:0 4px;
+            margin:2px 4px;
         }
         .game-blank-input {
             width:min(var(--gap-width, 220px), 100%);
-            max-width:320px;
-            min-width:125px;
-            height:34px;
-            padding:4px 10px 3px;
-            border:0;
+            max-width:340px;
+            min-width:140px;
+            height:40px;
+            padding:4px 30px 3px 12px;
+            border:2px solid #d9c3e4;
             border-bottom:2px solid #b985c9;
-            border-radius:7px 7px 3px 3px;
-            background:linear-gradient(180deg, rgba(247,240,250,.75), rgba(247,240,250,.25));
-            color:var(--accent);
-            font-size:12.5px;
+            border-radius:10px;
+            background:#fbf7fc;
+            color:#5c1f75;
+            font-size:15px;
             font-weight:800;
             font-family:inherit;
             text-align:center;
             box-shadow:none;
             transition:border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease, background 160ms ease;
         }
-        .game-blank-input::placeholder { color:#b296bb; font-weight:720; }
+        .game-blank-input::placeholder { color:#b296bb; font-weight:720; font-size:16px; }
         .game-blank-input:focus {
             outline:none;
-            border-bottom-color:var(--accent);
-            background:#faf6fc;
-            box-shadow:0 5px 10px rgba(143,63,170,.06);
+            border-color:var(--accent);
+            background:#ffffff;
+            box-shadow:0 0 0 3px rgba(143,63,170,.14), 0 5px 10px rgba(143,63,170,.08);
             transform:translateY(-1px);
         }
         .game-blank-input.correct {
-            color:#12833a;
-            border-bottom-color:#39a561;
-            background:#f1fbf4;
+            color:#0e6b30;
+            border-color:#39a561;
+            background:#eefaf2;
+            padding-right:12px;
             animation:correct-pop 560ms cubic-bezier(.2,.8,.2,1);
         }
         .game-blank-input.wrong {
-            color:#c31530;
-            border-bottom-color:#d95a6d;
-            background:#fff7f8;
+            color:#a3102b;
+            border-color:#d95a6d;
+            background:#fff2f3;
             animation:game-shake 300ms;
         }
+        .gap-clear-btn {
+            position:absolute;
+            right:6px;
+            top:50%;
+            transform:translateY(-50%);
+            width:20px;
+            height:20px;
+            border:none;
+            border-radius:50%;
+            background:#e6d5ec;
+            color:#5c1f75;
+            font-size:12px;
+            line-height:1;
+            display:none;
+            align-items:center;
+            justify-content:center;
+            cursor:pointer;
+            padding:0;
+        }
+        .gap-clear-btn.visible { display:flex; }
         .success-badge {
             position:absolute;
             right:-5px;
@@ -565,7 +586,8 @@
             .lyrics-line { font-size:13.5px; line-height:1.78; }
             .lyrics-line.challenge { line-height:2.05; }
             .lyrics-context { font-size:10.8px; }
-            .game-blank-input { max-width:calc(100vw - 105px); min-width:112px; font-size:12px; }
+            .game-blank-input { max-width:calc(100vw - 105px); min-width:130px; font-size:14px; height:38px; }
+            .game-blank-input::placeholder { font-size:15px; }
         }
     </style>
 </head>
@@ -862,18 +884,31 @@ async function loadSongOfDay() {
                 input.type = 'text';
                 input.autocomplete = 'off';
                 input.spellcheck = false;
-                input.placeholder = '… paroles manquantes …';
+                input.placeholder = '?';
                 input.dataset.answer = match.answer;
                 input.dataset.solved = 'false';
                 input.setAttribute('aria-label', `Paroles manquantes ${match.index + 1}`);
                 const visualWidth = Math.max(150, Math.min(310, match.answer.length * 6.1 + 34));
                 input.style.setProperty('--gap-width', `${visualWidth}px`);
 
+                const clearBtn = document.createElement('button');
+                clearBtn.type = 'button';
+                clearBtn.className = 'gap-clear-btn';
+                clearBtn.textContent = '×';
+                clearBtn.setAttribute('aria-label', 'Effacer ce champ');
+                clearBtn.addEventListener('click', () => {
+                    input.value = '';
+                    input.classList.remove('wrong');
+                    clearBtn.classList.remove('visible');
+                    input.focus();
+                });
+
                 const badge = document.createElement('span');
                 badge.className = 'success-badge';
                 badge.textContent = '✓';
 
                 wrapper.appendChild(input);
+                wrapper.appendChild(clearBtn);
                 wrapper.appendChild(badge);
                 lineEl.appendChild(wrapper);
 
@@ -884,8 +919,10 @@ async function loadSongOfDay() {
 
                 input.addEventListener('input', () => {
                     input.classList.remove('wrong');
+                    clearBtn.classList.toggle('visible', input.value.length > 0 && input.dataset.solved !== 'true');
                     if (normalizeAnswer(input.value) === normalizeAnswer(input.dataset.answer)) {
                         markCorrect(input);
+                        clearBtn.classList.remove('visible');
                         updateLyricsGameStatus(inputs);
                     }
                 });
