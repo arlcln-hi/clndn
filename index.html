@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    <meta name="color-scheme" content="light only">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>File d'attente</title>
     <style>
         :root {
+            color-scheme: light;
             --bg: #efefef;
             --card: #ffffff;
             --text: #2d2e35;
@@ -332,262 +334,404 @@
 
         .game-card {
             margin: 0 0 20px;
+            background: var(--bg);
+            border: none;
+            border-radius: 20px;
+            padding: 16px;
+            text-align: center;
+            font-weight: 400;
+            position: relative;
+            overflow: visible;
+        }
+
+        .game-sparkle {
+            position: absolute;
+            font-size: 14px;
+            color: #f0c419;
+            pointer-events: none;
+            animation: game-twinkle 2.4s ease-in-out infinite;
+        }
+
+        .game-sparkle:nth-child(1) { top: -6px; left: 6%; animation-delay: 0s; }
+        .game-sparkle:nth-child(2) { top: 10%; right: 4%; font-size: 11px; animation-delay: .5s; }
+        .game-sparkle:nth-child(3) { bottom: 6%; left: 3%; font-size: 12px; animation-delay: 1s; }
+        .game-sparkle:nth-child(4) { bottom: -4px; right: 10%; animation-delay: 1.5s; }
+        .game-sparkle:nth-child(5) { top: 40%; left: -2px; font-size: 10px; animation-delay: .8s; }
+
+        @keyframes game-twinkle {
+            0%, 100% { opacity: .25; transform: scale(0.7) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1.15) rotate(20deg); }
+        }
+
+        .game-card-label-shimmer {
+            background: linear-gradient(90deg, var(--accent) 0%, #e8a6ff 25%, var(--accent) 50%, #e8a6ff 75%, var(--accent) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: game-shimmer 3s linear infinite;
+        }
+
+        @keyframes game-shimmer {
+            to { background-position: -200% center; }
+        }
+
+        .game-confetti-piece {
+            position: fixed;
+            width: 7px;
+            height: 7px;
+            border-radius: 2px;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 1;
+            transition: transform 700ms cubic-bezier(.2,.8,.3,1), opacity 700ms ease-out;
+        }
+
+        .game-card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            text-align: left;
+            margin-bottom: 16px;
+            padding: 0 4px;
+        }
+
+        .game-card-header .setlist-label {
+            margin: 0;
+            font-size: 12px;
+        }
+
+        .game-streak {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--blue);
+            white-space: nowrap;
+            background: rgba(45, 102, 218, 0.1);
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+
+        .game-inner {
+            background: #fff;
+            border-radius: 16px;
+            padding: 24px 20px 20px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .game-intro {
+            font-size: 13.5px;
+            color: var(--muted);
+            margin: 0 0 16px;
+            letter-spacing: .01em;
+        }
+
+        .game-song-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 0 0 16px;
+        }
+
+        .game-listen-links {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 0 0 20px;
+        }
+
+        .game-listen-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            color: #fff;
+            border-radius: 999px;
+            padding: 10px 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+        }
+
+        .game-listen-btn.spotify {
+            background: #1DB954;
+        }
+
+        .game-listen-btn.apple {
+            background: #17181c;
+        }
+
+        .game-listen-btn.disabled {
+            opacity: .4;
+            box-shadow: none;
+            pointer-events: none;
+        }
+
+        .game-divider {
+            border-top: 1px dashed #e2e2e2;
+            margin: 0 0 20px;
+        }
+
+        .game-blank-progress {
+            display: flex;
+            justify-content: center;
+            gap: 7px;
+            margin: 0 0 16px;
+        }
+
+        .game-blank-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: #e8e8e8;
+            transition: transform 250ms ease, background 250ms ease;
+        }
+
+        .game-blank-dot.done {
+            background: #12833a;
+            animation: game-dot-pop 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes game-dot-pop {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.8) rotate(15deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .game-blank-count {
+            text-align: center;
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin: 0 0 6px;
+        }
+
+        .karaoke-scroll {
+            min-height: 110px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 7px;
+            margin: 0 0 22px;
+            padding: 6px 4px;
+        }
+
+        .karaoke-line {
+            text-align: center;
+            transition: opacity 350ms ease, transform 350ms ease, font-size 350ms ease, color 350ms ease;
+        }
+
+        .karaoke-line.small {
+            font-size: 12.5px;
+            color: var(--muted);
+            opacity: .65;
+        }
+
+        .karaoke-line.current {
+            font-size: 16.5px;
+            line-height: 2;
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .karaoke-line.entering {
+            opacity: 0;
+            transform: translateY(6px);
+        }
+
+        .game-blank-input {
+            display: inline-block;
+            width: 92px;
+            font-size: 16px;
+            font-weight: 700;
+            text-align: center;
+            border: none;
+            border-bottom: 2px solid var(--blue);
+            background: rgba(45, 102, 218, 0.06);
+            border-radius: 4px 4px 0 0;
+            color: var(--blue);
+            padding: 2px 4px 3px;
+            margin: 0 3px;
+        }
+
+        .game-blank-input::placeholder {
+            color: var(--blue);
+            opacity: .5;
+        }
+
+        .game-blank-input:focus {
+            outline: none;
+            background: rgba(45, 102, 218, 0.1);
+        }
+
+        .game-blank-input.correct {
+            color: #12833a;
+            border-color: #12833a;
+            background: rgba(18, 131, 58, 0.08);
+        }
+
+        .game-blank-input.wrong {
+            color: #c31530;
+            border-color: #c31530;
+            background: rgba(195, 21, 48, 0.08);
+            animation: game-shake 300ms;
+        }
+
+        @keyframes game-shake {
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+
+        .game-actions {
+            margin: 0 0 14px;
+        }
+
+        .game-check-btn {
             position: relative;
             overflow: hidden;
-            background: linear-gradient(180deg, #ffffff 0%, #fbf8fd 100%);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            background: var(--accent);
+            border: none;
+            border-radius: 999px;
+            padding: 12px 32px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(143, 63, 170, 0.3);
         }
-        .game-header { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:12px; }
-        .game-song-title { font-size:16px; font-weight:800; color:var(--text); margin:0 0 3px; }
-        .game-instruction { margin:0; font-size:11px; line-height:1.45; color:var(--muted); font-weight:500; }
-        .game-counter { flex:0 0 auto; min-width:42px; padding:5px 9px; border-radius:999px; background:#f3eaf7; color:var(--accent); font-size:11px; font-weight:800; text-align:center; }
-        .section-title {
-            margin:0 0 5px;
-            color:#26272d;
-            font-size:18px;
-            line-height:1.2;
-            font-weight:850;
-            letter-spacing:-.02em;
-        }
-        .section-subtitle {
-            margin:0;
-            color:var(--muted);
-            font-size:10.5px;
-            line-height:1.4;
-        }
-        .game-song-artist {
-            margin:0;
-            color:var(--muted);
-            font-size:10.5px;
-            font-weight:600;
-        }
-        .listen-row {
-            display:flex;
-            align-items:center;
-            gap:9px;
-            margin:12px 0 14px;
-            min-width:0;
-        }
-        .listen-label {
-            flex:0 0 auto;
-            color:#6f7178;
-            font-size:10.5px;
-            font-weight:750;
-        }
-        .game-listen-links, .lineup-platforms {
-            display:flex;
-            align-items:center;
-            gap:7px;
-            flex-wrap:wrap;
-            min-width:0;
-        }
-        .platform-btn {
-            display:inline-flex;
-            align-items:center;
-            justify-content:center;
-            gap:6px;
-            min-height:32px;
-            padding:5px 10px;
-            border:1px solid #e3e3e6;
-            border-radius:999px;
-            background:#fff;
-            color:#34353a;
-            font-size:10.5px;
-            font-weight:720;
-            line-height:1;
-            text-decoration:none;
-            white-space:nowrap;
-            box-shadow:0 1px 2px rgba(0,0,0,.035);
-            transition:border-color 150ms ease, background 150ms ease, transform 150ms ease, box-shadow 150ms ease;
-        }
-        .platform-btn img {
-            width:15px;
-            height:15px;
-            object-fit:contain;
-            display:block;
-        }
-        .platform-btn:hover {
-            background:#fafafa;
-            border-color:#cfcfd4;
-            box-shadow:0 3px 8px rgba(0,0,0,.055);
-            transform:translateY(-1px);
-        }
-        .platform-btn:focus-visible {
-            outline:2px solid rgba(143,63,170,.28);
-            outline-offset:2px;
-        }
-        .platform-btn.icon-only {
-            width:32px;
-            padding:5px;
-        }
-        .platform-btn.icon-only img { width:16px; height:16px; }
-        .game-divider {
-            height:1px;
-            background:#ededee;
-            margin:0 0 13px;
-        }
-        .game-kicker {
-            margin:0 0 7px;
-            color:var(--accent);
-            font-size:9.5px;
-            font-weight:800;
-            letter-spacing:.1em;
-            text-transform:uppercase;
-        }
-        .lineup-platforms {
-            margin:11px 0 16px;
-            padding-bottom:14px;
-            border-bottom:1px solid #ededee;
-        }
-        .lyrics-sheet {
-            max-height:390px;
-            overflow-y:auto;
-            padding:16px 14px 18px;
-            margin:0 0 13px;
-            border:1px solid #eee7f0;
-            border-radius:12px;
-            background:rgba(255,255,255,.88);
-            scrollbar-width:thin;
-            scrollbar-color:#d7c6df transparent;
-        }
-        .lyrics-line {
-            min-height:24px;
-            margin:0;
-            color:#34353b;
-            font-size:14px;
-            font-weight:560;
-            line-height:1.72;
-            text-align:left;
-        }
-        .lyrics-line + .lyrics-line { margin-top:2px; }
 
-        /* Les deux lignes à jouer restent dans le flux des paroles :
-           aucun gros encadré autour de la phrase. */
-        .lyrics-line.challenge {
-            margin:3px 0;
-            padding:1px 0;
-            background:transparent;
-            border:0;
-            border-radius:0;
-            animation:challenge-arrive 430ms ease both;
+        .game-check-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -60%;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.55), transparent);
+            animation: game-btn-shine 2.6s ease-in-out infinite;
         }
-        .lyrics-context {
-            display:inline;
-            font-size:11.5px;
-            line-height:1.45;
-            color:#8e8792;
-            font-weight:620;
-            vertical-align:middle;
-            opacity:.82;
-            animation:context-arrive 520ms ease both;
+
+        @keyframes game-btn-shine {
+            0% { left: -60%; }
+            50% { left: 130%; }
+            100% { left: 130%; }
         }
-        .lyrics-gap-wrap {
-            display:inline-flex;
-            position:relative;
-            align-items:center;
-            vertical-align:middle;
-            margin:2px 4px;
+
+        .game-feedback {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin: 0 0 8px;
+            min-height: 16px;
         }
-        .game-blank-input {
-            width:min(var(--gap-width, 220px), 100%);
-            max-width:340px;
-            min-width:140px;
-            height:40px;
-            padding:4px 30px 3px 12px;
-            border:2px solid #d9c3e4;
-            border-bottom:2px solid #b985c9;
-            border-radius:10px;
-            background:#fbf7fc;
-            color:#5c1f75;
-            font-size:15px;
-            font-weight:800;
-            font-family:inherit;
-            text-align:center;
-            box-shadow:none;
-            transition:border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease, background 160ms ease;
+
+        .game-feedback.ok { color: #12833a; }
+        .game-feedback.ko { color: #c31530; }
+
+        .game-hint {
+            font-size: 12px;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
         }
-        .game-blank-input::placeholder { color:#b296bb; font-weight:720; font-size:16px; }
-        .game-blank-input:focus {
-            outline:none;
-            border-color:var(--accent);
-            background:#ffffff;
-            box-shadow:0 0 0 3px rgba(143,63,170,.14), 0 5px 10px rgba(143,63,170,.08);
-            transform:translateY(-1px);
+
+        .game-share-btn {
+            display: none;
+            margin-top: 16px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            background: #25D366;
+            border: none;
+            border-radius: 999px;
+            padding: 10px 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
         }
-        .game-blank-input.correct {
-            color:#0e6b30;
-            border-color:#39a561;
-            background:#eefaf2;
-            padding-right:12px;
-            animation:correct-pop 560ms cubic-bezier(.2,.8,.2,1);
+
+        .game-share-btn.visible { display: inline-block; }
+
+        .game-progress {
+            margin: 14px 0 0;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .03em;
+            color: var(--muted);
+            text-align: center;
         }
-        .game-blank-input.wrong {
-            color:#a3102b;
-            border-color:#d95a6d;
-            background:#fff2f3;
-            animation:game-shake 300ms;
+
+        .game-tagline {
+            text-align: center;
+            font-size: 15px;
+            color: var(--text);
+            font-weight: 700;
+            margin: 0 0 12px;
+            padding: 0 10px;
         }
-        .gap-clear-btn {
-            position:absolute;
-            right:6px;
-            top:50%;
-            transform:translateY(-50%);
-            width:20px;
-            height:20px;
-            border:none;
-            border-radius:50%;
-            background:#e6d5ec;
-            color:#5c1f75;
-            font-size:12px;
-            line-height:1;
-            display:none;
-            align-items:center;
-            justify-content:center;
-            cursor:pointer;
-            padding:0;
+
+        .playlist-heading {
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+            margin: 0 0 14px;
         }
-        .gap-clear-btn.visible { display:flex; }
-        .success-badge {
-            position:absolute;
-            right:-5px;
-            top:-7px;
-            display:grid;
-            place-items:center;
-            width:18px;
-            height:18px;
-            border-radius:50%;
-            color:#fff;
-            background:#31a45c;
-            font-size:10px;
-            font-weight:900;
-            opacity:0;
-            transform:scale(.45) rotate(-18deg);
-            pointer-events:none;
+
+        .playlist-row {
+            display: flex;
+            justify-content: center;
+            gap: 22px;
+            margin: 0 0 20px;
         }
-        .lyrics-gap-wrap.solved .success-badge { animation:badge-pop 520ms cubic-bezier(.18,.89,.32,1.28) forwards; }
-        .spark { position:absolute; left:50%; top:50%; width:4px; height:4px; border-radius:50%; background:var(--accent); pointer-events:none; animation:spark-out 620ms ease-out forwards; }
-        .game-actions { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-        .game-check-btn { font-size:12px; font-weight:800; color:#fff; background:var(--accent); border:none; border-radius:999px; padding:8px 17px; cursor:pointer; transition:transform 120ms ease, opacity 120ms ease; }
-        .game-check-btn:hover { transform:translateY(-1px); }
-        .game-check-btn:active { transform:translateY(0); }
-        .game-feedback { font-size:11.5px; font-weight:800; }
-        .game-feedback.ok { color:#12833a; }
-        .game-feedback.ko { color:#c31530; }
-        @keyframes challenge-arrive { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
-        @keyframes context-arrive { from { opacity:.25; transform:scale(.985); } to { opacity:.82; transform:scale(1); } }
-        @keyframes correct-pop { 0% { transform:scale(1); } 45% { transform:scale(1.035); } 100% { transform:scale(1); } }
-        @keyframes badge-pop { 0% { opacity:0; transform:scale(.45) rotate(-18deg); } 65% { opacity:1; transform:scale(1.15) rotate(5deg); } 100% { opacity:1; transform:scale(1) rotate(0); } }
-        @keyframes spark-out { from { opacity:1; transform:translate(0,0) scale(1); } to { opacity:0; transform:translate(var(--dx),var(--dy)) scale(.15); } }
-        @keyframes game-shake { 25% { transform:translateX(-4px); } 75% { transform:translateX(4px); } }
-        @media (max-width:520px) {
-            .listen-row { align-items:flex-start; flex-direction:column; gap:7px; }
-            .lineup-platforms { gap:6px; }
-            .platform-btn { min-height:30px; padding:5px 9px; font-size:10px; }
-            .lyrics-sheet { max-height:350px; padding:14px 10px 16px; }
-            .lyrics-line { font-size:13.5px; line-height:1.78; }
-            .lyrics-line.challenge { line-height:2.05; }
-            .lyrics-context { font-size:10.8px; }
-            .game-blank-input { max-width:calc(100vw - 105px); min-width:130px; font-size:14px; height:38px; }
-            .game-blank-input::placeholder { font-size:15px; }
+
+        .playlist-btn {
+            flex: 0 0 auto;
+            width: 78px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .playlist-btn-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: #1DB954;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .playlist-btn:active .playlist-btn-icon {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+        }
+
+        .playlist-btn-icon.deezer {
+            background: #A238FF;
+        }
+
+        .playlist-btn-icon.apple {
+            background: #FA2D48;
+        }
+
+        .playlist-btn-label {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--text);
+            text-align: center;
+            line-height: 1.3;
         }
     </style>
 </head>
@@ -612,47 +756,52 @@
 
             <div class="divider"></div>
 
-            <div class="notice game-card" id="lyricsGame">
-                <div>
-                    <div class="section-title">Paroles du jour</div>
-                    <p class="game-song-title" id="gameSongTitle">Chargement…</p>
-                    <p class="game-song-artist" id="gameSongArtist">Céline Dion</p>
-                </div>
+            <p class="game-tagline">Paroles, je ne vous oublie pas</p>
 
-                <div class="listen-row">
-                    <span class="listen-label">Écoutez</span>
+            <p class="playlist-heading">Écouter</p>
+            <div class="playlist-row">
+                <a class="playlist-btn" id="playlistLinkSpotify" href="https://open.spotify.com/playlist/17ixKyP0RHNzeT0kW4yuXt?si=JWQRKMtDSgKAmuv9cPNqMg&utm_source=whatsapp&pi=-UVa9vZ8SJy1h" target="_blank" rel="noopener noreferrer">
+                    <span class="playlist-btn-icon">▶</span>
+                    <span class="playlist-btn-label">Spotify</span>
+                </a>
+                <a class="playlist-btn" id="playlistLinkDeezer" href="https://link.deezer.com/s/34ohtoDKguzTLWNGeACow" target="_blank" rel="noopener noreferrer">
+                    <span class="playlist-btn-icon deezer">▶</span>
+                    <span class="playlist-btn-label">Deezer</span>
+                </a>
+                <a class="playlist-btn" id="playlistLinkApple" href="#" target="_blank" rel="noopener noreferrer">
+                    <span class="playlist-btn-icon apple">♪</span>
+                    <span class="playlist-btn-label">Apple Music</span>
+                </a>
+            </div>
+
+            <div class="game-card" id="lyricsGame">
+                <span class="game-sparkle">✦</span>
+                <span class="game-sparkle">✧</span>
+                <span class="game-sparkle">✦</span>
+                <span class="game-sparkle">✧</span>
+                <span class="game-sparkle">✦</span>
+                <div class="game-card-header">
+                    <div class="setlist-label game-card-label-shimmer">Paroles<br>du jour</div>
+                    <div class="game-streak" id="gameStreak"></div>
+                </div>
+                <div class="game-inner">
+                    <p class="game-intro">Écoute d'abord, puis complète</p>
                     <div class="game-listen-links" id="gameListenLinks"></div>
+                    <div class="game-divider"></div>
+                    <p class="game-blank-count" id="gameBlankCount"></p>
+                    <div class="game-blank-progress" id="gameBlankProgress"></div>
+                    <div class="karaoke-scroll" id="karaokeScroll"></div>
+                    <div class="game-actions">
+                        <button class="game-check-btn" id="gameCheckBtn">Valider ✓</button>
+                    </div>
+                    <p class="game-feedback" id="gameFeedback"></p>
+                    <p class="game-hint" id="gameHint">Titre masqué jusqu'à la bonne réponse</p>
+                    <p class="game-song-title" id="gameSongTitle" style="display:none;"></p>
+                    <button class="game-share-btn" id="gameShareBtn">Partager mon score</button>
                 </div>
-
-                <div class="game-divider"></div>
-                <div class="game-kicker">Jeu — Retrouve les paroles</div>
-                <div class="game-header">
-                    <p class="game-instruction">Les paroles sont affichées en entier, mais 2 passages ont disparu. À toi de les retrouver.</p>
-                    <span class="game-counter" id="gameCounter">0 / 2</span>
-                </div>
-                <div class="lyrics-sheet" id="gameLyrics" aria-live="polite"></div>
-                <div class="game-actions">
-                    <button class="game-check-btn" id="gameCheckBtn">Vérifier mes 2 réponses</button>
-                    <span class="game-feedback" id="gameFeedback"></span>
-                </div>
+                <p class="game-progress" id="gameProgress"></p>
             </div>
 
-            <div class="notice" id="setlist">
-                <div class="section-title">Line Up Complet</div>
-                <p class="section-subtitle">Retrouvez Céline Dion sur votre plateforme préférée.</p>
-                <div class="lineup-platforms">
-                    <a class="platform-btn" href="https://open.spotify.com/search/C%C3%A9line%20Dion" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir Céline Dion sur Spotify">
-                        <img src="./assets/platforms/spotify.svg" alt="" aria-hidden="true"><span>Spotify</span>
-                    </a>
-                    <a class="platform-btn" href="https://www.deezer.com/search/C%C3%A9line%20Dion" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir Céline Dion sur Deezer">
-                        <img src="./assets/platforms/deezer.svg" alt="" aria-hidden="true"><span>Deezer</span>
-                    </a>
-                    <a class="platform-btn" href="https://music.apple.com/fr/search?term=C%C3%A9line%20Dion" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir Céline Dion sur Apple Music">
-                        <img src="./assets/platforms/apple.svg" alt="" aria-hidden="true"><span>Apple Music</span>
-                    </a>
-                </div>
-                <div class="setlist-acts" id="setlistActs"></div>
-            </div>
         </div>
 
         <div class="footer">
@@ -662,6 +811,7 @@
     </div>
 
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
         const startDate = new Date('2026-04-10T00:00:00');
         const targetDate = new Date('2026-10-17T00:00:00');
@@ -774,9 +924,12 @@ async function loadSongOfDay() {
 }
 
         // ══════════════════════════════════════════════════════════════════
-        // JEU DU JOUR — paroles complètes + exactement 2 passages masqués au hasard.
-        // `lyrics` contient le texte affiché et `blankCandidates` les passages
-        // autorisés à disparaître. Le rechargement de la page en choisit 2 autres.
+        // JEU DU JOUR — le contenu (phrase à trous, réponses, liens d'écoute) vit
+        // dans paroles_du_jour.json, à remplir toi-même (droits d'auteur : je ne
+        // peux pas écrire le texte des paroles à ta place, même à trous). Une
+        // entrée par date, avec 1 ou 2 "___" dans phraseTemplate et autant
+        // d'éléments dans blanks, dans l'ordre. Voir paroles_du_jour.json pour
+        // la structure exacte.
 
         let lyricsGameEntries = [];
 
@@ -790,267 +943,349 @@ async function loadSongOfDay() {
 
         function pickTodayLyricsEntry(entries) {
             if (entries.length === 0) return null;
-            const byDate = entries.find(e => e.date === todayDateStr());
-            return byDate || entries[0];
+            // Choix aléatoire à chaque chargement de page (plus simple pour tester
+            // que d'attendre le bon jour ou de changer la date système).
+            const randomIndex = Math.floor(Math.random() * entries.length);
+            return entries[randomIndex];
         }
 
-        function sampleTwo(items) {
-            const copy = [...items];
-            for (let i = copy.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [copy[i], copy[j]] = [copy[j], copy[i]];
-            }
-            return copy.slice(0, Math.min(2, copy.length));
-        }
+        function burstConfetti(originEl, count) {
+            const colors = ['#8f3faa', '#f0c419', '#2d66da', '#e8547a', '#1DB954'];
+            const rect = originEl ? originEl.getBoundingClientRect() : { left: window.innerWidth / 2, top: window.innerHeight / 2, width: 0, height: 0 };
+            const originX = rect.left + rect.width / 2;
+            const originY = rect.top + rect.height / 2;
 
-        function normalizeAnswer(value) {
-            return (value || '')
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '')
-                .replace(/[’‘`´]/g, "'")
-                .replace(/[^a-zA-Z0-9' ]/g, ' ')
-                .replace(/\s+/g, ' ')
-                .trim()
-                .toLowerCase();
-        }
+            for (let i = 0; i < count; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'game-confetti-piece';
+                piece.style.left = originX + 'px';
+                piece.style.top = originY + 'px';
+                piece.style.background = colors[i % colors.length];
+                document.body.appendChild(piece);
 
-        function createSuccessSparks(wrapper) {
-            const vectors = [
-                [-28, -24], [-10, -31], [14, -28], [31, -12],
-                [30, 16], [10, 29], [-15, 27], [-31, 10]
-            ];
-            vectors.forEach(([dx, dy], index) => {
-                const spark = document.createElement('i');
-                spark.className = 'spark';
-                spark.style.setProperty('--dx', `${dx}px`);
-                spark.style.setProperty('--dy', `${dy}px`);
-                spark.style.animationDelay = `${index * 18}ms`;
-                wrapper.appendChild(spark);
-                window.setTimeout(() => spark.remove(), 760);
-            });
-        }
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 40 + Math.random() * 70;
+                const dx = Math.cos(angle) * distance;
+                const dy = Math.sin(angle) * distance - 20;
 
-        function markCorrect(input) {
-            if (input.dataset.solved === 'true') return;
-            input.dataset.solved = 'true';
-            input.classList.remove('wrong');
-            input.classList.add('correct');
-            input.readOnly = true;
-            const wrapper = input.closest('.lyrics-gap-wrap');
-            if (wrapper) {
-                wrapper.classList.add('solved');
-                createSuccessSparks(wrapper);
+                requestAnimationFrame(() => {
+                    piece.style.transform = `translate(${dx}px, ${dy}px) rotate(${Math.random() * 360}deg)`;
+                    piece.style.opacity = '0';
+                });
+
+                setTimeout(() => piece.remove(), 750);
             }
         }
 
-        function renderLyrics(entry, selectedBlanks) {
-            const lyricsEl = document.getElementById('gameLyrics');
-            if (!lyricsEl) return [];
-            lyricsEl.innerHTML = '';
-
-            const selected = selectedBlanks.map((item, index) => ({
-                ...item,
-                answer: item.answer || '',
-                index
-            }));
-            const inputs = [];
-
-            (entry.lyrics || '').split(/\r?\n/).forEach(line => {
-                const lineEl = document.createElement('p');
-                lineEl.className = 'lyrics-line';
-                const match = selected.find(item => item.answer && line.includes(item.answer));
-
-                if (!match) {
-                    lineEl.textContent = line || '\u00a0';
-                    lyricsEl.appendChild(lineEl);
-                    return;
-                }
-
-                lineEl.classList.add('challenge');
-                const at = line.indexOf(match.answer);
-                const before = line.slice(0, at);
-                const after = line.slice(at + match.answer.length);
-
-                const beforeEl = document.createElement('span');
-                beforeEl.className = 'lyrics-context';
-                beforeEl.textContent = before;
-                lineEl.appendChild(beforeEl);
-
-                const wrapper = document.createElement('span');
-                wrapper.className = 'lyrics-gap-wrap';
-
-                const input = document.createElement('input');
-                input.className = 'game-blank-input';
-                input.type = 'text';
-                input.autocomplete = 'off';
-                input.spellcheck = false;
-                input.placeholder = '?';
-                input.dataset.answer = match.answer;
-                input.dataset.solved = 'false';
-                input.setAttribute('aria-label', `Paroles manquantes ${match.index + 1}`);
-                const visualWidth = Math.max(150, Math.min(310, match.answer.length * 6.1 + 34));
-                input.style.setProperty('--gap-width', `${visualWidth}px`);
-
-                const clearBtn = document.createElement('button');
-                clearBtn.type = 'button';
-                clearBtn.className = 'gap-clear-btn';
-                clearBtn.textContent = '×';
-                clearBtn.setAttribute('aria-label', 'Effacer ce champ');
-                clearBtn.addEventListener('click', () => {
-                    input.value = '';
-                    input.classList.remove('wrong');
-                    clearBtn.classList.remove('visible');
-                    input.focus();
-                });
-
-                const badge = document.createElement('span');
-                badge.className = 'success-badge';
-                badge.textContent = '✓';
-
-                wrapper.appendChild(input);
-                wrapper.appendChild(clearBtn);
-                wrapper.appendChild(badge);
-                lineEl.appendChild(wrapper);
-
-                const afterEl = document.createElement('span');
-                afterEl.className = 'lyrics-context';
-                afterEl.textContent = after;
-                lineEl.appendChild(afterEl);
-
-                input.addEventListener('input', () => {
-                    input.classList.remove('wrong');
-                    clearBtn.classList.toggle('visible', input.value.length > 0 && input.dataset.solved !== 'true');
-                    if (normalizeAnswer(input.value) === normalizeAnswer(input.dataset.answer)) {
-                        markCorrect(input);
-                        clearBtn.classList.remove('visible');
-                        updateLyricsGameStatus(inputs);
-                    }
-                });
-
-                input.addEventListener('keydown', event => {
-                    if (event.key === 'Enter') {
-                        event.preventDefault();
-                        document.getElementById('gameCheckBtn')?.click();
-                    }
-                });
-
-                inputs.push(input);
-                lyricsEl.appendChild(lineEl);
-            });
-
-            return inputs;
-        }
-
-        function updateLyricsGameStatus(inputs, afterValidation = false) {
-            const counter = document.getElementById('gameCounter');
-            const feedback = document.getElementById('gameFeedback');
-            const solved = inputs.filter(input => input.dataset.solved === 'true').length;
-            if (counter) counter.textContent = `${solved} / ${inputs.length}`;
-            if (!feedback) return;
-
-            if (solved === 2 && inputs.length === 2) {
-                feedback.textContent = 'Bravo, les 2 passages sont retrouvés ! ✨';
-                feedback.className = 'game-feedback ok';
-            } else if (afterValidation) {
-                feedback.textContent = solved === 1 ? '1 sur 2 : presque !' : 'Pas encore, réessaie.';
-                feedback.className = 'game-feedback ko';
-            } else {
-                feedback.textContent = '';
-                feedback.className = 'game-feedback';
-            }
-        }
-
-        const musicPlatforms = [
-            { id: 'spotify', label: 'Spotify', icon: './assets/platforms/spotify.svg', field: 'spotifyUrl' },
-            { id: 'youtube', label: 'YouTube', icon: './assets/platforms/youtube.svg', field: 'youtubeUrl' },
-            { id: 'apple', label: 'Apple Music', icon: './assets/platforms/apple.svg', field: 'appleMusicUrl' },
-            { id: 'deezer', label: 'Deezer', icon: './assets/platforms/deezer.svg', field: 'deezerUrl' }
+        const congratsMessages = [
+            'Bravo, tu connais tes classiques !',
+            'Exact, en plein dans le mille !',
+            'Impeccable, Céline serait fière !',
+            'Bien joué, tu progresses !',
+            'Top, tu l\'as trouvé !',
         ];
 
-        function buildMusicSearchUrl(platform, title, artist) {
-            const query = `${artist || 'Céline Dion'} ${title || ''}`.trim();
-            const encoded = encodeURIComponent(query);
-            if (platform === 'spotify') return `https://open.spotify.com/search/${encoded}`;
-            if (platform === 'youtube') return `https://www.youtube.com/results?search_query=${encoded}`;
-            if (platform === 'apple') return `https://music.apple.com/fr/search?term=${encoded}`;
-            if (platform === 'deezer') return `https://www.deezer.com/search/${encoded}`;
-            return '#';
+        // Compte les jours (pas forcément consécutifs à la seconde près, mais au
+        // jour civil près) où une chanson a été entièrement résolue.
+        function getStreak() {
+            return parseInt(localStorage.getItem('pdjStreak') || '0', 10);
         }
 
-        function renderListenPlatforms(container, entry) {
-            if (!container) return;
-            container.innerHTML = '';
+        function bumpStreakIfNeeded() {
+            const today = todayDateStr();
+            const lastSolved = localStorage.getItem('pdjLastSolvedDate');
+            if (lastSolved === today) return getStreak();
 
-            musicPlatforms.forEach(platform => {
-                const link = document.createElement('a');
-                link.className = 'platform-btn icon-only';
-                link.href = entry?.[platform.field] || buildMusicSearchUrl(platform.id, entry?.titre, entry?.artiste);
-                link.target = '_blank';
-                link.rel = 'noopener noreferrer';
-                link.title = platform.label;
-                link.setAttribute('aria-label', `Écouter ${entry?.titre || 'la chanson'} sur ${platform.label}`);
+            const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
+            const yStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`;
+            const newStreak = (lastSolved === yStr) ? getStreak() + 1 : 1;
 
-                const img = document.createElement('img');
-                img.src = platform.icon;
-                img.alt = '';
-                img.setAttribute('aria-hidden', 'true');
+            localStorage.setItem('pdjLastSolvedDate', today);
+            localStorage.setItem('pdjStreak', String(newStreak));
+            return newStreak;
+        }
 
-                link.appendChild(img);
-                container.appendChild(link);
-            });
+        function renderStreak() {
+            const streakEl = document.getElementById('gameStreak');
+            if (!streakEl) return;
+            const n = getStreak();
+            streakEl.textContent = n > 0 ? `${n} jour${n > 1 ? 's' : ''}` : '';
         }
 
         async function loadLyricsGame() {
             const titleEl = document.getElementById('gameSongTitle');
-            const artistEl = document.getElementById('gameSongArtist');
-            const lyricsEl = document.getElementById('gameLyrics');
+            const hintEl = document.getElementById('gameHint');
             const linksEl = document.getElementById('gameListenLinks');
             const checkBtn = document.getElementById('gameCheckBtn');
+            const feedbackEl = document.getElementById('gameFeedback');
+            const shareBtn = document.getElementById('gameShareBtn');
+            const progressEl = document.getElementById('gameProgress');
+            const scrollEl = document.getElementById('karaokeScroll');
+            const progressDotsEl = document.getElementById('gameBlankProgress');
+            const blankCountEl = document.getElementById('gameBlankCount');
+
+            renderStreak();
 
             try {
                 const response = await fetch('./paroles_du_jour.json');
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                lyricsGameEntries = (await response.json()).filter(entry =>
-                    entry.lyrics && Array.isArray(entry.blankCandidates) && entry.blankCandidates.length >= 2
-                );
+                lyricsGameEntries = (await response.json())
+                    .filter(e => Array.isArray(e.lines) && e.lines.length > 0);
             } catch (error) {
                 console.error('Erreur lors du chargement du jeu du jour :', error);
                 lyricsGameEntries = [];
             }
 
             const entry = pickTodayLyricsEntry(lyricsGameEntries);
+
             if (!entry) {
-                if (titleEl) titleEl.textContent = 'Aucune chanson configurée pour l\'instant';
-                if (lyricsEl) lyricsEl.textContent = 'Ajoute des paroles et au moins 2 passages possibles dans paroles_du_jour.json.';
+                if (hintEl) hintEl.textContent = 'Aucune chanson configurée pour l\'instant';
+                if (scrollEl) scrollEl.textContent = 'Remplis paroles_du_jour.json pour activer le jeu.';
                 if (checkBtn) checkBtn.style.display = 'none';
                 return;
             }
 
-            if (titleEl) titleEl.textContent = entry.titre || '';
-            if (artistEl) artistEl.textContent = entry.artiste || 'Céline Dion';
-            renderListenPlatforms(linksEl, entry);
+            if (linksEl) {
+                linksEl.innerHTML = '';
 
-            const inputs = renderLyrics(entry, sampleTwo(entry.blankCandidates));
-            updateLyricsGameStatus(inputs);
+                const spotifyBtn = document.createElement('a');
+                spotifyBtn.className = 'game-listen-btn spotify';
+                spotifyBtn.textContent = '▶ Spotify';
+                spotifyBtn.href = entry.spotifyUrl || '#';
+                spotifyBtn.target = '_blank';
+                spotifyBtn.rel = 'noopener noreferrer';
+                if (!entry.spotifyUrl) spotifyBtn.classList.add('disabled');
+                linksEl.appendChild(spotifyBtn);
 
-            if (checkBtn) {
-                checkBtn.style.display = '';
-                checkBtn.onclick = () => {
-                    inputs.forEach(input => {
-                        if (input.dataset.solved === 'true') return;
-                        if (normalizeAnswer(input.value) === normalizeAnswer(input.dataset.answer)) {
-                            markCorrect(input);
-                        } else {
-                            input.classList.remove('correct');
-                            input.classList.add('wrong');
+                const appleBtn = document.createElement('a');
+                appleBtn.className = 'game-listen-btn apple';
+                appleBtn.textContent = '▶ Apple Music';
+                appleBtn.href = entry.appleMusicUrl || '#';
+                appleBtn.target = '_blank';
+                appleBtn.rel = 'noopener noreferrer';
+                if (!entry.appleMusicUrl) appleBtn.classList.add('disabled');
+                linksEl.appendChild(appleBtn);
+            }
+
+            // Position dans le line-up (pour l'indication "Chanson X / 25 · Act Y").
+            let songMeta = null;
+            for (const actGroup of setlist) {
+                const found = actGroup.songs.find(s => s.title === entry.titre);
+                if (found) { songMeta = { n: found.n, act: actGroup.act }; break; }
+            }
+            if (progressEl) {
+                progressEl.textContent = songMeta
+                    ? `Chanson ${songMeta.n} / 25 · ${songMeta.act}`
+                    : '';
+            }
+
+            const lines = entry.lines;
+
+            // Pool de lignes "à trou" candidates (celles qui ont un blankTemplate +
+            // une blankAnswer dans le JSON). À chaque partie, on en tire au hasard
+            // "blanksPerRound" (3 par défaut) parmi ce pool — les autres lignes
+            // candidates s'affichent normalement, en texte complet.
+            const candidateIndices = [];
+            lines.forEach((l, i) => { if (l.blankTemplate && l.blankAnswer) candidateIndices.push(i); });
+
+            const blanksPerRound = Math.min(entry.blanksPerRound || 3, candidateIndices.length);
+            const shuffled = candidateIndices.slice().sort(() => Math.random() - 0.5);
+            const activeBlankIndices = shuffled.slice(0, blanksPerRound).sort((a, b) => a - b);
+            const activeSet = new Set(activeBlankIndices);
+
+            // 10 points au total par chanson, répartis entre les trous actifs de
+            // cette partie. Répartition à reste réparti pour que la somme fasse
+            // toujours exactement 10, quel que soit le nombre de trous tirés.
+            const blankCount = activeBlankIndices.length;
+            const baseShare = blankCount > 0 ? Math.floor(10 / blankCount) : 0;
+            const remainder = blankCount > 0 ? 10 % blankCount : 0;
+            const pointsForLineIndex = {};
+            activeBlankIndices.forEach((idx, i) => {
+                pointsForLineIndex[idx] = baseShare + (i < remainder ? 1 : 0);
+            });
+
+            if (progressDotsEl) {
+                progressDotsEl.innerHTML = '';
+                activeBlankIndices.forEach(() => {
+                    const dot = document.createElement('div');
+                    dot.className = 'game-blank-dot';
+                    progressDotsEl.appendChild(dot);
+                });
+            }
+            if (blankCountEl) blankCountEl.textContent = `0 / ${blankCount} trous trouvés`;
+            if (checkBtn) checkBtn.style.display = 'none';
+
+            let score = 0;
+            let solvedCount = 0;
+            let currentIndex = 0;
+            let advanceTimer = null;
+
+            function lineDisplayText(i, { spoilerSafe } = {}) {
+                const line = lines[i];
+                if (!line) return '';
+                if (spoilerSafe && activeSet.has(i)) return line.blankTemplate;
+                return line.text;
+            }
+
+            function finishSong() {
+                if (checkBtn) checkBtn.style.display = 'none';
+                if (feedbackEl) feedbackEl.textContent = `Chanson terminée : ${score} / 10 points !`;
+                if (hintEl) hintEl.style.display = 'none';
+                if (titleEl) {
+                    titleEl.textContent = entry.titre || '';
+                    titleEl.style.display = 'block';
+                }
+                if (shareBtn) shareBtn.classList.add('visible');
+                burstConfetti(document.getElementById('lyricsGame'), 24);
+                bumpStreakIfNeeded();
+                renderStreak();
+            }
+
+            function advance() {
+                clearTimeout(advanceTimer);
+                currentIndex += 1;
+                if (currentIndex >= lines.length) {
+                    finishSong();
+                    return;
+                }
+                renderCurrent();
+                if (!activeSet.has(currentIndex)) {
+                    advanceTimer = setTimeout(advance, 2600);
+                }
+            }
+
+            function checkCurrentBlank(input, lineIndex, dotIndex) {
+                const line = lines[lineIndex];
+                const isCorrect = input.value.trim().toLowerCase() === (line.blankAnswer || '').trim().toLowerCase();
+
+                if (isCorrect) {
+                    input.classList.remove('wrong');
+                    input.classList.add('correct');
+                    input.disabled = true;
+                    burstConfetti(input, 6);
+                    score += pointsForLineIndex[lineIndex];
+                    solvedCount += 1;
+
+                    if (progressDotsEl && progressDotsEl.children[dotIndex]) {
+                        progressDotsEl.children[dotIndex].classList.add('done');
+                    }
+                    if (blankCountEl) blankCountEl.textContent = `${solvedCount} / ${blankCount} trous trouvés`;
+                    if (feedbackEl) {
+                        feedbackEl.textContent = congratsMessages[Math.floor(Math.random() * congratsMessages.length)];
+                        feedbackEl.className = 'game-feedback ok';
+                    }
+                    if (checkBtn) checkBtn.style.display = 'none';
+                    setTimeout(advance, 900);
+                } else {
+                    input.classList.remove('correct');
+                    input.classList.add('wrong');
+                    if (feedbackEl) {
+                        feedbackEl.textContent = 'Pas encore, réessaie.';
+                        feedbackEl.className = 'game-feedback ko';
+                    }
+                }
+            }
+
+            function renderCurrent() {
+                if (!scrollEl) return;
+                scrollEl.innerHTML = '';
+
+                if (currentIndex > 0) {
+                    const prevEl = document.createElement('p');
+                    prevEl.className = 'karaoke-line small entering';
+                    prevEl.textContent = lineDisplayText(currentIndex - 1);
+                    scrollEl.appendChild(prevEl);
+                    requestAnimationFrame(() => prevEl.classList.remove('entering'));
+                }
+
+                const curEl = document.createElement('div');
+                curEl.className = 'karaoke-line current entering';
+
+                if (activeSet.has(currentIndex)) {
+                    const dotIndex = activeBlankIndices.indexOf(currentIndex);
+                    const parts = lines[currentIndex].blankTemplate.split('___');
+                    curEl.appendChild(document.createTextNode(parts[0] || ''));
+
+                    const input = document.createElement('input');
+                    input.className = 'game-blank-input';
+                    input.type = 'text';
+                    input.placeholder = '?';
+                    input.autocomplete = 'off';
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            checkCurrentBlank(input, currentIndex, dotIndex);
                         }
                     });
-                    updateLyricsGameStatus(inputs, true);
-                };
+                    curEl.appendChild(input);
+                    curEl.appendChild(document.createTextNode(parts[1] || ''));
+
+                    if (checkBtn) {
+                        checkBtn.style.display = 'inline-flex';
+                        checkBtn.onclick = () => checkCurrentBlank(input, currentIndex, dotIndex);
+                    }
+                } else {
+                    curEl.textContent = lineDisplayText(currentIndex);
+                    if (checkBtn) checkBtn.style.display = 'none';
+                }
+
+                scrollEl.appendChild(curEl);
+                requestAnimationFrame(() => curEl.classList.remove('entering'));
+
+                if (currentIndex + 1 < lines.length) {
+                    const nextEl = document.createElement('p');
+                    nextEl.className = 'karaoke-line small entering';
+                    nextEl.textContent = lineDisplayText(currentIndex + 1, { spoilerSafe: true });
+                    scrollEl.appendChild(nextEl);
+                    requestAnimationFrame(() => nextEl.classList.remove('entering'));
+                }
+            }
+
+            renderCurrent();
+            if (!activeSet.has(currentIndex)) {
+                advanceTimer = setTimeout(advance, 2600);
+            }
+
+            if (shareBtn) {
+                shareBtn.onclick = () => shareScoreScreenshot(entry.titre, score);
             }
         }
 
-                const setlist = [
+        async function shareScoreScreenshot(songTitle, score) {
+            const card = document.getElementById('lyricsGame');
+            if (!card || typeof html2canvas === 'undefined') return;
+
+            const canvas = await html2canvas(card, { backgroundColor: '#ffffff' });
+
+            canvas.toBlob(async (blob) => {
+                if (!blob) return;
+                const file = new File([blob], 'score-celine.png', { type: 'image/png' });
+
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    try {
+                        await navigator.share({
+                            files: [file],
+                            title: 'Paroles du jour',
+                            text: `${score}/10 sur "${songTitle}" — à toi de faire mieux !`,
+                        });
+                        return;
+                    } catch (err) {
+                        // L'utilisateur a annulé le partage, ou le navigateur a refusé :
+                        // pas grave, on retombe sur le téléchargement direct.
+                    }
+                }
+
+                // Repli (desktop / navigateurs sans Web Share API avec fichiers) :
+                // téléchargement direct de l'image, à envoyer ensuite manuellement
+                // sur WhatsApp.
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'score-celine.png';
+                link.click();
+            }, 'image/png');
+        }
+
+        const setlist = [
             {
                 act: 'Act I', time: '8:00 pm', songs: [
                     { n: 1, title: 'On ne change pas' },
@@ -1162,7 +1397,6 @@ async function loadSongOfDay() {
 
     updateProgress();
     setInterval(updateProgress, 1000);
-    renderSetlist();
     loadLyricsGame();
     </script>
 
