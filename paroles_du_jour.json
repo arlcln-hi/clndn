@@ -8,141 +8,129 @@
     "blanksPerRound": 3,
     "lines": [
       {
-        "text": "À COMPLÉTER (ligne 1)"
+        "text": "On ne change pas"
+      },
+{
+  "text": "On met juste les costumes d'autres sur soi\nOn ne change pas",
+  "blankTemplate": "On met juste ___",
+  "blankAnswer": "les costumes d'autres sur soi"
+}
+      {
+        "text": "On ne change pas"
       },
       {
-        "text": "À COMPLÉTER (ligne 2 complète, sans trou)",
-        "blankTemplate": "À COMPLÉTER (ligne 2 avec ___ à la place du mot à deviner)",
-        "blankAnswer": "À COMPLÉTER (le mot manquant de la ligne 2)"
+        "text": "Une veste ne cache qu'un peu de ce qu'on voit"
       },
       {
-        "text": "À COMPLÉTER (ligne 3)"
+        "text": "On ne grandit pas"
       },
       {
-        "text": "À COMPLÉTER (ligne 4)"
+        "text": "On pousse un peu, tout juste le temps d'un rêve, d'un songe"
       },
       {
-        "text": "À COMPLÉTER (ligne 5)"
+        "text": "Et les toucher du doigt"
       },
       {
-        "text": "À COMPLÉTER (ligne 6 complète, sans trou)",
-        "blankTemplate": "À COMPLÉTER (ligne 6 avec ___ à la place du mot à deviner)",
-        "blankAnswer": "À COMPLÉTER (le mot manquant de la ligne 6)"
+        "text": "Mais on n'oublie pas"
       },
       {
-        "text": "À COMPLÉTER (ligne 7)"
+        "text": "L'enfant qui reste, presque nu"
       },
       {
-        "text": "À COMPLÉTER (ligne 8)"
+        "text": "Les instants d'innocence"
       },
       {
-        "text": "À COMPLÉTER (ligne 9)"
+        "text": "Quand on ne savait pas"
       },
       {
-        "text": "À COMPLÉTER (ligne 10)"
+        "text": "On ne change pas"
       },
       {
-        "text": "À COMPLÉTER (ligne 11)"
+        "text": "On attrape des airs et des poses de combat"
       },
       {
-        "text": "À COMPLÉTER (ligne 12)"
+        "text": "On ne change pas"
       },
       {
-        "text": "À COMPLÉTER (ligne 13 complète, sans trou)",
-        "blankTemplate": "À COMPLÉTER (ligne 13 avec ___ à la place du mot à deviner)",
-        "blankAnswer": "À COMPLÉTER (le mot manquant de la ligne 13)"
+        "text": "On se donne le change, on croit que l'on fait des choix"
       },
       {
-        "text": "À COMPLÉTER (ligne 14)"
+        "text": "Mais si tu grattes là"
       },
       {
-        "text": "À COMPLÉTER (ligne 15)"
+        "text": "Tout près de l'apparence tremble un petit qui nous ressemble"
       },
       {
-        "text": "À COMPLÉTER (ligne 16)"
+        "text": "On sait bien qu'il est là"
       },
       {
-        "text": "À COMPLÉTER (ligne 17)"
+        "text": "On l'entend parfois"
       },
       {
-        "text": "À COMPLÉTER (ligne 18)"
+        "text": "Sa rengaine insolente qui s'entête et qui répète"
       },
       {
-        "text": "À COMPLÉTER (ligne 19)"
+        "text": "Oh ne me quitte pas"
       },
       {
-        "text": "À COMPLÉTER (ligne 20)"
+        "text": "On n'oublie jamais"
       },
       {
-        "text": "À COMPLÉTER (ligne 21)"
+        "text": "On a toujours un geste qui trahit qui l'on est"
       },
       {
-        "text": "À COMPLÉTER (ligne 22)"
+        "text": "Un prince, un valet"
       },
       {
-        "text": "À COMPLÉTER (ligne 23)"
+        "text": "Sous la couronne un regard une arrogance, un trait"
       },
       {
-        "text": "À COMPLÉTER (ligne 24)"
+        "text": "D'un prince ou d'un valet"
       },
       {
-        "text": "À COMPLÉTER (ligne 25)"
+        "text": "Je sais tellement ça"
       },
       {
-        "text": "À COMPLÉTER (ligne 26)"
+        "text": "J'ai copié des images et des rêves que j'avais"
       },
       {
-        "text": "À COMPLÉTER (ligne 27)"
+        "text": "Tous ces milliers de rêves"
       },
       {
-        "text": "À COMPLÉTER (ligne 28 complète, sans trou)",
-        "blankTemplate": "À COMPLÉTER (ligne 28 avec ___ à la place du mot à deviner)",
-        "blankAnswer": "À COMPLÉTER (le mot manquant de la ligne 28)"
+        "text": "Mais si près de moi"
       },
       {
-        "text": "À COMPLÉTER (ligne 29)"
+        "text": "Une petite fille maigre marche à Charlemagne, inquiète"
       },
       {
-        "text": "À COMPLÉTER (ligne 30)"
+        "text": "Et me parle tout bas"
       },
       {
-        "text": "À COMPLÉTER (ligne 31 complète, sans trou)",
-        "blankTemplate": "À COMPLÉTER (ligne 31 avec ___ à la place du mot à deviner)",
-        "blankAnswer": "À COMPLÉTER (le mot manquant de la ligne 31)"
+        "text": "On ne change pas, on met juste les costumes d'autres et voilà"
       },
       {
-        "text": "À COMPLÉTER (ligne 32)"
+        "text": "On ne change pas, on ne cache qu'un instant de soi"
       },
       {
-        "text": "À COMPLÉTER (ligne 33)"
+        "text": "Une petite fille"
       },
       {
-        "text": "À COMPLÉTER (ligne 34 complète, sans trou)",
-        "blankTemplate": "À COMPLÉTER (ligne 34 avec ___ à la place du mot à deviner)",
-        "blankAnswer": "À COMPLÉTER (le mot manquant de la ligne 34)"
+        "text": "Ingrate et solitaire marche et rêve dans les neiges en oubliant le froid"
       },
       {
-        "text": "À COMPLÉTER (ligne 35)"
+        "text": "Si je la maquille"
       },
       {
-        "text": "À COMPLÉTER (ligne 36 complète, sans trou)",
-        "blankTemplate": "À COMPLÉTER (ligne 36 avec ___ à la place du mot à deviner)",
-        "blankAnswer": "À COMPLÉTER (le mot manquant de la ligne 36)"
+        "text": "Elle disparaît un peu, le temps de me regarder faire"
       },
       {
-        "text": "À COMPLÉTER (ligne 37)"
+        "text": "Et se moquer de moi"
       },
       {
-        "text": "À COMPLÉTER (ligne 38)"
+        "text": "Une petite fille"
       },
       {
-        "text": "À COMPLÉTER (ligne 39)"
-      },
-      {
-        "text": "À COMPLÉTER (ligne 40)"
-      },
-      {
-        "text": "À COMPLÉTER (ligne 41)"
+        "text": "Une toute petite fille"
       }
     ]
   },
