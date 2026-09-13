@@ -1,0 +1,34 @@
+[
+  {
+    "date": "2026-04-13",
+    "titre": "On ne change pas",
+    "artiste": "Céline Dion",
+    "spotifyUrl": "",
+    "appleMusicUrl": "",
+    "previousLine": "À COMPLÉTER (optionnel) : la ligne juste avant celle du jeu, affichée en petit au-dessus",
+    "phraseTemplate": "À COMPLÉTER : recopie ici les lignes de la chanson qui contiennent tes 7 trous, avec ___ à la place de chaque mot ou groupe de mots à deviner. Un ___ par entrée du tableau blanks ci-dessous, dans le même ordre.",
+    "nextLine": "À COMPLÉTER (optionnel) : la ligne juste après, affichée en petit en dessous",
+    "blanks": [
+      "À COMPLÉTER (trou 1)",
+      "À COMPLÉTER (trou 2)",
+      "À COMPLÉTER (trou 3)",
+      "À COMPLÉTER (trou 4)",
+      "À COMPLÉTER (trou 5)",
+      "À COMPLÉTER (trou 6)",
+      "À COMPLÉTER (trou 7)"
+    ],
+    "hint": "Optionnel : un petit indice si un mot est difficile"
+  },
+  {
+    "date": "2026-04-14",
+    "titre": "Destin",
+    "artiste": "Céline Dion",
+    "spotifyUrl": "",
+    "appleMusicUrl": "",
+    "previousLine": "",
+    "phraseTemplate": "",
+    "nextLine": "",
+    "blanks": [],
+    "hint": ""
+  }
+]
