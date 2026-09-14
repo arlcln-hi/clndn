@@ -5,6 +5,8 @@
     "artiste": "Céline Dion",
     "spotifyUrl": "https://music.youtube.com/watch?v=7mjJn_hQxWE&feature=gws_kp_track",
     "appleMusicUrl": "https://music.apple.com/fr/album/on-ne-change-pas/212137941?i=212137956",
+    "deezerUrl": "https://link.deezer.com/s/34ozYo0OAvhqZlCWfftQr",
+    "youtubeUrl": "https://youtu.be/3tOsUgwBgko?si=jArNMGRyLFPFOXxA"
     "blanksPerRound": 2,
     "lines": [
       {
@@ -153,22 +155,20 @@
         "text": "Une toute petite fille"
       }
     ],
-    "deezerUrl": "https://link.deezer.com/s/34ozYo0OAvhqZlCWfftQr",
-    "youtubeUrl": "https://youtu.be/3tOsUgwBgko?si=jArNMGRyLFPFOXxA"
   }
- {
+  {
     "titre": "Destin",
     "artiste": "Céline Dion",
     "spotifyUrl": "https://open.spotify.com/intl-fr/track/1G97yeRCLPhm5nvFaI6hE5?si=a3a90fb904f347c9",
-    "appleMusicUrl": "",
-    "deezerUrl": "",
-    "youtubeUrl": "",
+    "appleMusicUrl": "https://music.apple.com/fr/song/destin/338620276",
+    "deezerUrl": "https://link.deezer.com/s/34oHzvmd6qwvrJUD3trwe",
+    "youtubeUrl": "https://youtu.be/yxui9Oef93Y?si=RdGrVSdloXA0wZXN",
     "lines": [
       {
         "text": "Y'a pas de voiles aux volets de mes frères"
       },
       {
-        "text": "Y'a pas d'opale autour de mes doigts"
+        "text": "Y'a pas d'opale autour de mes doigts",
         "blankTemplate": "Y'a pas d'opale autour de mes ___",
         "blankAnswer": "doigts"
       },
@@ -176,12 +176,12 @@
         "text": "Ni cathédrale où cacher mes prières"
       },
       {
-        "text": "Juste un peu d'or autour de ma voix"
+        "text": "Juste un peu d'or autour de ma voix",
         "blankTemplate": "Juste un peu ___ de ma voix",
         "blankAnswer": "d'or autour"
       },
       {
-        "text": "Je vais les routes et je vais les frontières"
+        "text": "Je vais les routes et je vais les frontières",
         "blankTemplate": "Je vais les routes et ___",
         "blankAnswer": "je vais les frontières"
       },
@@ -189,27 +189,29 @@
         "text": "Je sens, j'écoute, et j'apprends, je vois"
       },
       {
-        "text": "Le temps s'égoutte au long des fuseaux horaires"
+        "text": "Le temps s'égoutte au long des fuseaux horaires",
         "blankTemplate": "Le temps s'égoutte au ___",
-        "blankAnswer":"long des fuseaux horaires"
+        "blankAnswer": "long des fuseaux horaires"
       },
       {
         "text": "Je prends, je donne, avais-je le choix ?"
       },
-      {
-        "text": ""
-      },
+
       {
         "text": "Tel est mon destin"
       },
       {
-        "text": "Je vais mon chemin"
+        "text": "Je vais mon chemin",
+        "blankTemplate": "___",
+        "blankAnswer": "Je vais mon chemin"
       },
       {
         "text": "Ainsi passent mes heures"
       },
       {
-        "text": "Au rythme entêtant des battements de mon cœur"
+        "text": "Au rythme entêtant des battements de mon cœur",
+        "blankTemplate": "Au rythme entêtant des battements ___",
+        "blankAnswer": "de mon cœur"
       },
       {
         "text": ""
@@ -310,7 +312,135 @@
     "appleMusicUrl": "",
     "deezerUrl": "",
     "youtubeUrl": "",
-    "lines": []
+    "lines": [
+      {
+        "text": "For all those times you stood by me"
+      },
+      {
+        "text": "For all the truth that you made me see"
+      },
+      {
+        "text": "For all the joy you brought to my life"
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+
+
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+
+
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+
+    ]
   },
   {
     "titre": "Encore un soir",
