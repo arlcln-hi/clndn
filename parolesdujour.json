@@ -49,18 +49,24 @@
       },
       {
         "text": "On attrape des airs et des poses de combat"
+        "blankTemplate": "On attrape des airs et des ___",
+        "blankAnswer": "poses de combat"
       },
       {
         "text": "On ne change pas"
       },
       {
         "text": "On se donne le change, on croit que l'on fait des choix"
+        "blankTemplate": "On se donne le change, on croit que l'on ___",
+        "blankAnswer": "fait des choix"
       },
       {
         "text": "Mais si tu grattes là"
       },
       {
         "text": "Tout près de l'apparence tremble un petit qui nous ressemble"
+        "blankTemplate": "Tout près de l'apparence ___ qui nous ressemble",
+        "blankAnswer": "tremble un petit"
       },
       {
         "text": "On sait bien qu'il est là"
