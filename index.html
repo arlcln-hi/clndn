@@ -257,79 +257,6 @@
             margin-bottom: 10px;
         }
 
-        .setlist-acts {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .setlist-act-badge {
-            display: inline-block;
-            margin: 10px 0 4px;
-            padding: 3px 10px;
-            border-radius: 4px;
-            background: #3d4faa;
-            color: #fff;
-            font-size: 10.5px;
-            font-weight: 700;
-        }
-
-        .setlist-act-time {
-            font-size: 10.5px;
-            color: var(--muted);
-            margin: 0 0 6px;
-        }
-
-        .setlist-row {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            padding: 5px 0;
-        }
-
-        .setlist-num {
-            flex: 0 0 20px;
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--muted);
-        }
-
-        .setlist-info {
-            flex: 1 1 auto;
-            min-width: 0;
-        }
-
-        .setlist-title {
-            font-size: 12.5px;
-            font-weight: 700;
-            color: var(--text);
-            line-height: 1.4;
-        }
-
-        .setlist-note {
-            font-size: 10.5px;
-            color: var(--muted);
-            margin-top: 1px;
-        }
-
-        .lyrics-btn {
-            flex: 0 0 auto;
-            font-size: 10px;
-            font-weight: 700;
-            color: var(--blue);
-            background: #eef3fd;
-            border: 1px solid #d5e2f7;
-            border-radius: 999px;
-            padding: 4px 10px;
-            cursor: pointer;
-            white-space: nowrap;
-            text-decoration: none;
-        }
-
-        .lyrics-btn:hover {
-            background: #dfe9fb;
-        }
-
         .game-card {
             margin: 0 0 20px;
             position: relative;
@@ -761,44 +688,6 @@
             }
         }
 
-async function loadSongOfDay() {
-    try {
-        const response = await fetch('./chansons_celine.json');
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-        }
-
-        const songs = await response.json();
-
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, '0');
-        const dd = String(today.getDate()).padStart(2, '0');
-        const todayStr = `${yyyy}-${mm}-${dd}`;
-
-        const song = songs.find(item => item.date === todayStr) || songs[0];
-
-        if (!song) return;
-
-        if (songTitle) songTitle.textContent = song.titre || '';
-        if (songMeta) {
-            const meta = [song.album, song.date].filter(Boolean).join(' • ');
-            songMeta.textContent = meta;
-        }
-        if (songAnecdote) songAnecdote.textContent = song.anecdote || '';
-        if (songLink) {
-            if (song.lien) {
-                songLink.innerHTML = `<a href="${song.lien}" target="_blank" rel="noopener noreferrer">Écouter ou regarder</a>`;
-            } else {
-                songLink.textContent = '';
-            }
-        }
-    } catch (error) {
-        console.error('Erreur lors du chargement de la chanson du jour :', error);
-        if (songTitle) songTitle.textContent = 'Impossible de charger la chanson du jour';
-    }
-}
-
         // ══════════════════════════════════════════════════════════════════
         // JEU DU JOUR — paroles complètes + exactement 2 passages masqués au hasard.
         // `lyrics` contient le texte affiché et `blankCandidates` les passages
@@ -1130,7 +1019,28 @@ async function loadSongOfDay() {
             try {
                 const response = await fetch('./paroles_du_jour.json');
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                lyricsGameEntries = (await response.json()).filter(entry =>
+                const raw = await response.json();
+
+                // Compatibilité avec le format lines[] (texte ligne par ligne +
+                // blankTemplate/blankAnswer sur les lignes à trou) : on le
+                // convertit ici en lyrics (texte complet) + blankCandidates
+                // (liste des réponses), sans jamais lire ni modifier le
+                // contenu réel des paroles.
+                const adapted = raw.map(entry => {
+                    if (entry.lyrics && Array.isArray(entry.blankCandidates)) return entry;
+                    if (Array.isArray(entry.lines)) {
+                        return {
+                            ...entry,
+                            lyrics: entry.lines.map(l => l.text || '').join('\n'),
+                            blankCandidates: entry.lines
+                                .filter(l => l.blankTemplate && l.blankAnswer)
+                                .map(l => ({ answer: l.blankAnswer })),
+                        };
+                    }
+                    return entry;
+                });
+
+                lyricsGameEntries = adapted.filter(entry =>
                     entry.lyrics && Array.isArray(entry.blankCandidates) && entry.blankCandidates.length >= 2
                 );
             } catch (error) {
@@ -1170,119 +1080,9 @@ async function loadSongOfDay() {
             }
         }
 
-                const setlist = [
-            {
-                act: 'Act I', time: '8:00 pm', songs: [
-                    { n: 1, title: 'On ne change pas' },
-                    { n: 2, title: 'Destin' },
-                    { n: 3, title: 'Because You Loved Me' },
-                    { n: 4, title: 'Encore un soir' },
-                    { n: 5, title: 'Les derniers seront les premiers', note: 'First time performed since 2009' },
-                    { n: 6, title: "Tout l'or des hommes" },
-                    { n: 7, title: 'The Power of Love', note: '(Jennifer Rush cover)' },
-                ]
-            },
-            {
-                act: 'Act II', songs: [
-                    { n: 8, title: 'My Heart Will Go On', note: '(James Horner cover)' },
-                    { n: 9, title: 'Beauty and the Beast', note: '(Alan Menken cover)' },
-                    { n: 10, title: 'The Chase', note: 'Live debut' },
-                    { n: 11, title: "J'irai où tu iras" },
-                    { n: 12, title: 'Ne bouge pas', note: 'First time performed in full since 2003' },
-                    { n: 13, title: 'Dans un autre monde' },
-                    { n: 14, title: "I Feel Love / I'm Alive / That's the Way It Is / Sweet Dreams (Are Made of This)" },
-                ]
-            },
-            {
-                act: 'Act III', songs: [
-                    { n: 15, title: 'Dansons', note: 'Live debut' },
-                    { n: 16, title: 'Un garçon pas comme les autres', note: '(Michel Berger cover)' },
-                    { n: 17, title: 'Courage' },
-                ]
-            },
-            {
-                act: 'Act IV', songs: [
-                    { n: 18, title: 'Love Can Move Mountains' },
-                    { n: 19, title: 'The Prayer' },
-                    { n: 20, title: "It's All Coming Back to Me Now", note: "(Pandora's Box cover)" },
-                    { n: 21, title: 'Je chanterai', note: 'Live debut' },
-                    { n: 22, title: 'Ebben? Ne andrò lontana', note: '(Maria Callas cover)' },
-                ]
-            },
-            {
-                act: 'Encore', songs: [
-                    { n: 23, title: 'All by Myself', note: '(Eric Carmen cover)' },
-                    { n: 24, title: "Pour que tu m'aimes encore" },
-                    { n: 25, title: "S'il suffisait d'aimer" },
-                ]
-            },
-        ];
-
-        function buildLyricsSearchUrl(title) {
-            const query = `Céline Dion ${title} paroles`;
-            return `https://genius.com/search?q=${encodeURIComponent(query)}`;
-        }
-
-        function renderSetlist() {
-            const container = document.getElementById('setlistActs');
-            if (!container) return;
-
-            setlist.forEach(actGroup => {
-                const badge = document.createElement('div');
-                badge.className = 'setlist-act-badge';
-                badge.textContent = actGroup.act;
-                container.appendChild(badge);
-
-                if (actGroup.time) {
-                    const time = document.createElement('div');
-                    time.className = 'setlist-act-time';
-                    time.textContent = actGroup.time;
-                    container.appendChild(time);
-                }
-
-                actGroup.songs.forEach(song => {
-                    const row = document.createElement('div');
-                    row.className = 'setlist-row';
-
-                    const num = document.createElement('div');
-                    num.className = 'setlist-num';
-                    num.textContent = `${song.n}.`;
-
-                    const info = document.createElement('div');
-                    info.className = 'setlist-info';
-
-                    const title = document.createElement('div');
-                    title.className = 'setlist-title';
-                    title.textContent = song.title;
-                    info.appendChild(title);
-
-                    if (song.note) {
-                        const note = document.createElement('div');
-                        note.className = 'setlist-note';
-                        note.textContent = song.note;
-                        info.appendChild(note);
-                    }
-
-                    // Pas de paroles affichées ici (droits d'auteur) : le bouton ouvre
-                    // simplement une recherche Genius pré-remplie pour le titre, pour réviser.
-                    const lyricsBtn = document.createElement('a');
-                    lyricsBtn.className = 'lyrics-btn';
-                    lyricsBtn.textContent = 'Paroles';
-                    lyricsBtn.href = buildLyricsSearchUrl(song.title);
-                    lyricsBtn.target = '_blank';
-                    lyricsBtn.rel = 'noopener noreferrer';
-
-                    row.appendChild(num);
-                    row.appendChild(info);
-                    row.appendChild(lyricsBtn);
-                    container.appendChild(row);
-                });
-            });
-        }
 
     updateProgress();
     setInterval(updateProgress, 1000);
-    renderSetlist();
     loadLyricsGame();
     </script>
 
