@@ -1017,7 +1017,7 @@
             const checkBtn = document.getElementById('gameCheckBtn');
 
             try {
-                const response = await fetch('./paroles_du_jour.json');
+                const response = await fetch('./parolesdujour.json');
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const raw = await response.json();
 
@@ -1051,7 +1051,7 @@
             const entry = pickTodayLyricsEntry(lyricsGameEntries);
             if (!entry) {
                 if (titleEl) titleEl.textContent = 'Aucune chanson configurée pour l\'instant';
-                if (lyricsEl) lyricsEl.textContent = 'Ajoute des paroles et au moins 2 passages possibles dans paroles_du_jour.json.';
+                if (lyricsEl) lyricsEl.textContent = 'Ajoute des paroles et au moins 2 passages possibles.';
                 if (checkBtn) checkBtn.style.display = 'none';
                 return;
             }
