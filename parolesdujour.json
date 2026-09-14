@@ -214,9 +214,6 @@
         "blankAnswer": "de mon cœur"
       },
       {
-        "text": ""
-      },
-      {
         "text": "Des feux d'été je vole aux sombres hivers"
       },
       {
@@ -228,11 +225,11 @@
       {
         "text": "Je vais je viens, ce monde est le mien"
       },
+
       {
-        "text": ""
-      },
-      {
-        "text": "Je vis de notes et je vis de lumière"
+        "text": "Je vis de notes et je vis de lumière",
+        "blankTemplate": "Je vis de notes et ___",
+        "blankAnswer": "je vis de lumière"
       },
       {
         "text": "Je virevolte à vos cris, vos mains"
@@ -243,9 +240,7 @@
       {
         "text": "Je vois dans vos yeux mes lendemains"
       },
-      {
-        "text": ""
-      },
+
       {
         "text": "Tel est mon destin"
       },
@@ -259,10 +254,9 @@
         "text": "Au rythme entêtant des battements de mon cœur"
       },
       {
-        "text": ""
-      },
-      {
-        "text": "Je vais les routes et je vais les frontières"
+        "text": "Je vais les routes et je vais les frontières",
+        "blankTemplate": "Je vais les routes et je vais ___",
+        "blankAnswer": "les frontières"
       },
       {
         "text": "Je sens, j'écoute, et j'apprends, je vois"
@@ -274,22 +268,18 @@
         "text": "Je prends, je donne, avais-je le choix ?"
       },
       {
-        "text": ""
-      },
-      {
         "text": "Je prends le blues aux signaux des répondeurs"
       },
       {
         "text": "Je prends la peine aux aéroports"
       },
       {
-        "text": "Je vis l'amour à des kilomètres ailleurs"
+        "text": "Je vis l'amour à des kilomètres ailleurs",
+        "blankTemplate": "Je vis l'amour à des ___",
+        "blankAnswer": "kilomètres ailleurs"
       },
       {
         "text": "Et le bonheur à mon téléphone"
-      },
-      {
-        "text": ""
       },
       {
         "text": "Tel est mon destin"
@@ -308,10 +298,10 @@
   {
     "titre": "Because You Loved Me",
     "artiste": "Céline Dion",
-    "spotifyUrl": "",
-    "appleMusicUrl": "",
-    "deezerUrl": "",
-    "youtubeUrl": "",
+    "spotifyUrl": "https://open.spotify.com/intl-fr/track/4CqxxBxMXPST4nW0V38GPy?si=deeea35980dc4f50",
+    "appleMusicUrl": "https://music.apple.com/fr/song/because-you-loved-me-theme-from-up-close-and-personal/1473319252",
+    "deezerUrl": "https://link.deezer.com/s/34mv0LqnhZPEIi8WUduTb",
+    "youtubeUrl": "https://youtu.be/fpl4if07ics?si=kUVVHmcnBM-QUJbO",
     "lines": [
       {
         "text": "For all those times you stood by me"
@@ -323,122 +313,176 @@
         "text": "For all the joy you brought to my life"
       },
       {
-        "text": ""
+        "text": "For all the wrong that you made right"
       },
       {
-        "text": ""
+        "text": "For every dream you made come true"
       },
       {
-        "text": ""
+        "text": "For all the love I found in you"
       },
       {
-        "text": ""
+        "text": "I'll be forever thankful, baby"
       },
 
 
       {
-        "text": ""
+        "text": "You're the one who held me up, never let me fall"
       },
       {
-        "text": ""
+        "text": "You're the one who saw me through, through it all"
       },
 
 
       {
-        "text": ""
+        "text": "You were my strength when I was weak"
       },
       {
-        "text": ""
+        "text": "You were my voice when I couldn't speak"
       },
       {
-        "text": ""
+        "text": "You were my eyes when I couldn't see"
       },
       {
-        "text": ""
+        "text": "You saw the best there was in me"
       },
       {
-        "text": ""
+        "text": "Lifted me up when I couldn't reach"
       },
       {
-        "text": ""
+        "text": "You gave me faith 'cause you believed"
       },
       {
-        "text": ""
+        "text": "I'm everything I am, because you loved me, ooh, baby"
       },
 
       {
-        "text": ""
+        "text": "You gave me wings and made me fly"
       },
       {
-        "text": ""
+        "text": "You touched my hand, I could touch the sky"
       },
       {
-        "text": ""
+        "text": "I lost my faith, you gave it back to me"
       },
 
       {
-        "text": ""
+        "text": "You said no star was out of reach"
       },
       {
-        "text": ""
+        "text": "You stood by me, and I stood tall"
       },
       {
-        "text": ""
+        "text": "I had your love, I had it all"
       },
       {
-        "text": ""
+        "text": "I'm grateful for each day you gave me"
       },
 
       {
-        "text": ""
+        "text": "Maybe I don't know that much, but I know this much is true"
       },
       {
-        "text": ""
+        "text": "I was blessed because I was loved by you"
       },
 
       {
-        "text": ""
+        "text": "(You were my strength when I was weak)"
       },
       {
-        "text": ""
+        "text": "You were my strength"
       },
       {
-        "text": ""
+        "text": "(You were my voice when I couldn't speak)"
       },
       {
-        "text": ""
+        "text": "You were my eyes when I couldn't see"
       },
       {
-        "text": ""
+        "text": "You saw the best there was in me"
       },
       {
-        "text": ""
+        "text": "Lifted me up when I couldn't reach"
       },
       {
-        "text": ""
+        "text": "You gave me faith 'cause you believed"
       },
       {
-        "text": ""
+        "text": "I'm everything I am, because you loved me, loved me"
       },
 
       {
-        "text": ""
+        "text": "You were always there for me"
       },
       {
-        "text": ""
+        "text": "The tender wind that carried me"
       },
       {
-        "text": ""
+        "text": "A light in the dark, shining your love into my life"
       },
       {
-        "text": ""
+        "text": "You've been my inspiration"
       },
       {
-        "text": ""
+        "text": "Through the lies you were the truth"
       },
       {
-        "text": ""
+        "text": "My world is a better place because of you"
       },
+      {
+        "text": "(You were my strength when I was weak)"
+      },
+      {
+        "text": "You were my strength"
+      },
+      {
+        "text": "(You were my voice when I couldn't speak)"
+      },
+      {
+        "text": "Oh, when I couldn't speak"
+      },
+      {
+        "text": "(You were my eyes when I couldn't see)"
+      },
+      {
+        "text": "You saw the best there was in me"
+      },
+      {
+        "text": "(Lifted me up when I couldn't reach)"
+      },
+      {
+        "text": "(You gave me faith 'cause you believed)"
+      },
+      {
+        "text": "I'm everything I am, because you loved me"
+      },
+      {
+        "text": "(You were my strength when I was weak)"
+      },
+      {
+        "text": "(You were my voice when I couldn't speak)"
+      },
+      {
+        "text": "(You were my eyes when I couldn't see)"
+      },
+      {
+        "text": "You saw the best there was in me"
+      },
+      {
+        "text": "(Lifted me up when I couldn't reach)"
+      },
+      {
+        "text": "(You gave me faith 'cause you) believed"
+      },
+      {
+        "text": "(You gave me faith 'cause you) believed"
+      },
+      {
+        "text": "I'm everything I am"
+      },
+      {
+        "text": "Because you loved me"
+      }
 
     ]
   },
