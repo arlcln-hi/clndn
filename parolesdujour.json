@@ -6,7 +6,7 @@
     "spotifyUrl": "https://music.youtube.com/watch?v=7mjJn_hQxWE&feature=gws_kp_track",
     "appleMusicUrl": "https://music.apple.com/fr/album/on-ne-change-pas/212137941?i=212137956",
     "deezerUrl": "https://link.deezer.com/s/34ozYo0OAvhqZlCWfftQr",
-    "youtubeUrl": "https://youtu.be/3tOsUgwBgko?si=jArNMGRyLFPFOXxA"
+    "youtubeUrl": "https://youtu.be/3tOsUgwBgko?si=jArNMGRyLFPFOXxA",
     "blanksPerRound": 2,
     "lines": [
       {
@@ -50,7 +50,7 @@
         "text": "On ne change pas"
       },
       {
-        "text": "On attrape des airs et des poses de combat"
+        "text": "On attrape des airs et des poses de combat",
         "blankTemplate": "On attrape des airs et des ___",
         "blankAnswer": "poses de combat"
       },
@@ -58,7 +58,7 @@
         "text": "On ne change pas"
       },
       {
-        "text": "On se donne le change, on croit que l'on fait des choix"
+        "text": "On se donne le change, on croit que l'on fait des choix",
         "blankTemplate": "On se donne le change, on croit que l'on ___",
         "blankAnswer": "fait des choix"
       },
@@ -66,7 +66,7 @@
         "text": "Mais si tu grattes là"
       },
       {
-        "text": "Tout près de l'apparence tremble un petit qui nous ressemble"
+        "text": "Tout près de l'apparence tremble un petit qui nous ressemble",
         "blankTemplate": "Tout près de l'apparence ___ qui nous ressemble",
         "blankAnswer": "tremble un petit"
       },
@@ -77,14 +77,14 @@
         "text": "On l'entend parfois"
       },
       {
-        "text": "Sa rengaine insolente qui s'entête et qui répète"
+        "text": "Sa rengaine insolente qui s'entête et qui répète",
         "blankTemplate": "Sa rengaine insolente qui s'entête et qui ___",
         "blankAnswer": "répète"
       },
       {
-        "text": "Oh ne me quitte pas"
+        "text": "Oh ne me quitte pas",
         "blankTemplate": "___",
-        "text": "Oh ne me quitte pas"
+        "blankAnswer": "Oh ne me quitte pas"
       },
       {
         "text": "On n'oublie jamais"
@@ -96,7 +96,7 @@
         "text": "Un prince, un valet"
       },
       {
-        "text": "Sous la couronne un regard une arrogance, un trait"
+        "text": "Sous la couronne un regard une arrogance, un trait",
         "blankTemplate": "Sous la couronne ___, un trait",
         "blankAnswer": "un regard une arrogance"
       },
@@ -110,7 +110,7 @@
         "text": "J'ai copié des images et des rêves que j'avais"
       },
       {
-        "text": "Tous ces milliers de rêves"
+        "text": "Tous ces milliers de rêves",
         "blankTemplate": "___",
         "blankAnswer": "Tous ces milliers de rêves"
       },
@@ -133,7 +133,7 @@
         "text": "Une petite fille"
       },
       {
-        "text": "Ingrate et solitaire marche et rêve dans les neiges en oubliant le froid"
+        "text": "Ingrate et solitaire marche et rêve dans les neiges en oubliant le froid",
         "blankTemplate": "Ingrate et solitaire marche et rêve dans les neiges ___",
         "blankAnswer": "en oubliant le froid"
       },
@@ -141,7 +141,7 @@
         "text": "Si je la maquille"
       },
       {
-        "text": "Elle disparaît un peu, le temps de me regarder faire"
+        "text": "Elle disparaît un peu, le temps de me regarder faire",
         "blankTemplate": "Elle disparaît un peu, ___",
         "blankAnswer": "le temps de me regarder faire"
       },
@@ -154,8 +154,8 @@
       {
         "text": "Une toute petite fille"
       }
-    ],
-  }
+    ]
+  },
   {
     "titre": "Destin",
     "artiste": "Céline Dion",
@@ -495,8 +495,156 @@
     "youtubeUrl": "https://youtu.be/9bLD0tVep9M?si=V0IDpdFr7gpXhDpc",
     "lines": [
       {
-        "text": "BUne photo, une date"
+        "text": "Une photo, une date"
+      },
+      {
+        "text": "C'est à n'y pas croire"
+      },
+      {
+        "text": "C'était pourtant hier, mentirait ma mémoire"
+      },
+      {
+        "text": "Et ces visages d'enfants, et le mien dans ce miroir"
+      },
+      {
+        "text": "Oh, c'est pas pour me plaindre, ça vous n'avez rien à craindre"
+      },
+      {
+        "text": "La vie m'a tellement gâtée, j'ai plutôt du mal à l'éteindre"
+      },
+      {
+        "text": "Ô mon Dieu, j'ai eu ma part"
+      },
+      {
+        "text": "Et bien plus à tant d'égards"
+      },
+      {
+        "text": "Mais quand on vit trop beau, trop fort, on en oublie le temps qui passe"
+      },
+      {
+        "text": "Comme on perd un peu le nord au milieu de trop vastes espaces"
+      },
+      {
+        "text": "À peine le temps de s'y faire, à peine on doit laisser la place"
+      },
+      {
+        "text": "Ô si je pouvais"
+      },
+      {
+        "text": "Encore un soir, encore une heure"
+      },
+      {
+        "text": "Encore une larme de bonheur"
+      },
+      {
+        "text": "Une faveur comme une fleur"
+      },
+      {
+        "text": "Un souffle, une erreur"
+      },
+      {
+        "text": "Un peu de nous, un rien de tout"
+      },
+      {
+        "text": "Pour tout se dire encore ou bien se taire en regards,"
+      },
+      {
+        "text": "Juste un report"
+      },
+      {
+        "text": "À peine encore, même s'il est tard"
+      },
+      {
+        "text": "J'ai jamais rien demandé, ça c'est pas la mer à boire"
+      },
+      {
+        "text": "Allez, face à l'éternité, ça va même pas se voir"
+      },
+      {
+        "text": "Ça restera entre nous, ô juste un léger retard"
+      },
+      {
+        "text": "Y'en a tant qui tuent le temps"
+      },
+      {
+        "text": "Tant et tant qu'ils le perdent ou le passent"
+      },
+      {
+        "text": "Tant qui se mentent inventant les rêves"
+      },
+      {
+        "text": "En des instants de grâce"
+      },
+      {
+        "text": "Ô je donne ma place au paradis"
+      },
+      {
+        "text": "Si l'on m'oublie sur Terre"
+      },
+      {
+        "text": "Encore hier"
+      },
+      {
+        "text": "Encore un soir, encore une heure"
+      },
+      {
+        "text": "Encore une larme de bonheur"
+      },
+      {
+        "text": "Une faveur comme une fleur"
+      },
+      {
+        "text": "Un souffle, une erreur"
+      },
+      {
+        "text": "Un peu de nous, un rien de tout"
+      },
+      {
+        "text": "Pour tout se dire encore ou bien se taire en regards,"
+      },
+      {
+        "text": "Jute un report"
+      },
+      {
+        "text": "À peine encore, je sais, il est tard"
+      },
+
+      {
+        "text": "C'est pas grand-chose, rien qu'une pause"
+      },
+      {
+        "text": "Que le temps, les horloges se reposent"
+      },
+      {
+        "text": "Et caresser juste un baiser, un baiser"
+      },
+
+
+      {
+        "text": "Encore un soir, encore une heure"
+      },
+      {
+        "text": "Encore un soir, encore une heure"
+      },
+      {
+        "text": "Un soir"
+      },
+      {
+        "text": "Encore un soir"
+      },
+      {
+        "text": "Encore une heure"
+      },
+      {
+        "text": "Un peu de nous"
+      },
+      {
+        "text": "Un rien de tout"
+      },
+      {
+        "text": "Un soir"
       }
+
     ]
   },
   {
