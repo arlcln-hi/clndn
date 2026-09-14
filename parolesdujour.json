@@ -489,11 +489,15 @@
   {
     "titre": "Encore un soir",
     "artiste": "Céline Dion",
-    "spotifyUrl": "",
-    "appleMusicUrl": "",
-    "deezerUrl": "",
-    "youtubeUrl": "",
-    "lines": []
+    "spotifyUrl": "https://open.spotify.com/intl-fr/track/51yjUe42smRbgWvg9i9pFa?si=8c7de71ac2bb49f2",
+    "appleMusicUrl": "https://music.apple.com/fr/song/encore-un-soir/1131933949",
+    "deezerUrl": "https://link.deezer.com/s/34oyvJC8zTID0lzVwbt91",
+    "youtubeUrl": "https://youtu.be/9bLD0tVep9M?si=V0IDpdFr7gpXhDpc",
+    "lines": [
+      {
+        "text": "BUne photo, une date"
+      }
+    ]
   },
   {
     "titre": "Les derniers seront les premiers",
