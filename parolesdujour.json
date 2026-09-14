@@ -79,7 +79,9 @@
         "blankTemplate": "Sa rengaine insolente qui s'entête et qui ___",
         "blankAnswer": "répète"
       },
-      {Sa rengaine insolente qui s'entête et 
+      {
+        "text": "Oh ne me quitte pas"
+        "blankTemplate": "___",
         "text": "Oh ne me quitte pas"
       },
       {
