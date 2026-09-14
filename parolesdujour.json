@@ -5,14 +5,14 @@
     "artiste": "Céline Dion",
     "spotifyUrl": "https://music.youtube.com/watch?v=7mjJn_hQxWE&feature=gws_kp_track",
     "appleMusicUrl": "https://music.apple.com/fr/album/on-ne-change-pas/212137941?i=212137956",
-    "blanksPerRound": 3,
+    "blanksPerRound": 2,
     "lines": [
       {
         "text": "On ne change pas"
       },
       {
         "text": "On met juste les costumes d'autres sur soi",
-        "blankTemplate": "On met juste ___",
+        "blankTemplate": "On met juste___",
         "blankAnswer": "les costumes d'autres sur soi"
       },
       {
@@ -25,9 +25,9 @@
         "text": "On ne grandit pas"
       },
       {
-        "text": "On pousse un peu, tout juste le temps d'un rêve, d'un songe"
-        "blankTemplate": "On pousse un peu, tout juste ___, d'un songe ",
-        "blankAnswer": "le temps d'un rêve"
+        "text": "On pousse un peu, tout juste le temps d'un rêve, d'un songe",
+        "blankTemplate": "On pousse un peu, ___",
+        "blankAnswer": "tout juste le temps d'un rêve, d'un songe"
       },
       {
         "text": "Et les toucher du doigt"
@@ -135,6 +135,7 @@
         "text": "Une toute petite fille"
       }
     ],
-    "deezerUrl": ""
+    "deezerUrl": "",
+    "youtubeUrl": ""
   }
 ]
