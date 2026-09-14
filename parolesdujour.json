@@ -91,6 +91,8 @@
       },
       {
         "text": "Sous la couronne un regard une arrogance, un trait"
+        "blankTemplate": "Sous la couronne ___, un trait",
+        "blankAnswer": "un regard une arrogance"
       },
       {
         "text": "D'un prince ou d'un valet"
@@ -103,6 +105,8 @@
       },
       {
         "text": "Tous ces milliers de rêves"
+        "blankTemplate": "___",
+        "blankAnswer": "Tous ces milliers de rêves"
       },
       {
         "text": "Mais si près de moi"
