@@ -347,6 +347,41 @@
             padding:5px;
         }
         .platform-btn.icon-only img { width:16px; height:16px; }
+
+        .song-nav {
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:10px;
+            margin:10px 0 2px;
+        }
+        .song-nav-btn {
+            width:38px;
+            height:38px;
+            border:1px solid #e4d9e8;
+            border-radius:50%;
+            background:#fff;
+            color:var(--accent);
+            font:800 22px/1 inherit;
+            cursor:pointer;
+            display:grid;
+            place-items:center;
+            transition:transform 150ms ease, background 150ms ease, border-color 150ms ease;
+        }
+        .song-nav-btn:hover { background:#faf6fb; border-color:#d6bfdf; transform:translateY(-1px); }
+        .song-nav-btn:disabled { opacity:.35; cursor:not-allowed; transform:none; }
+        .song-position {
+            min-width:62px;
+            text-align:center;
+            color:#8a7f8f;
+            font-size:11px;
+            font-weight:800;
+            letter-spacing:.04em;
+        }
+        .game-card.swipe-left .lyrics-sheet, .game-card.swipe-left .game-song-title { animation:song-slide-left 220ms ease; }
+        .game-card.swipe-right .lyrics-sheet, .game-card.swipe-right .game-song-title { animation:song-slide-right 220ms ease; }
+        @keyframes song-slide-left { from { opacity:.35; transform:translateX(18px); } to { opacity:1; transform:translateX(0); } }
+        @keyframes song-slide-right { from { opacity:.35; transform:translateX(-18px); } to { opacity:1; transform:translateX(0); } }
         .game-divider {
             height:1px;
             background:#ededee;
@@ -570,6 +605,12 @@
                     <div class="section-title">Écoute, chante, et gagne</div>
                     <p class="game-song-title" id="gameSongTitle">Chargement…</p>
                     <p class="game-song-artist" id="gameSongArtist">Céline Dion</p>
+
+                <div class="song-nav" aria-label="Changer de chanson">
+                    <button type="button" class="song-nav-btn" id="gamePrevSong" aria-label="Chanson précédente">‹</button>
+                    <span class="song-position" id="gameSongPosition">1 / —</span>
+                    <button type="button" class="song-nav-btn" id="gameNextSong" aria-label="Chanson suivante">›</button>
+                </div>
                 </div>
 
                 <div class="listen-row">
@@ -674,16 +715,18 @@
         // ══════════════════════════════════════════════════════════════════
         // JEU DU JOUR — paroles complètes + tous les passages configurés dans le JSON.
         // `lyrics` contient le texte affiché et `blankCandidates` les passages
-        // autorisés à disparaître. Le rechargement de la page en choisit 2 autres.
+        // configurés dans le JSON. Tous les passages configurés sont affichés : aucune limite.
 
         let lyricsGameEntries = [];
-        const embeddedLyricsGameData = [{"date":"2026-04-13","titre":"On ne change pas","artiste":"Céline Dion","spotifyUrl":"https://music.youtube.com/watch?v=7mjJn_hQxWE&feature=gws_kp_track","appleMusicUrl":"https://music.apple.com/fr/album/on-ne-change-pas/212137941?i=212137956","lines":[{"text":"On ne change pas"},{"text":"On met juste les costumes d'autres sur soi","blankTemplate":"On met juste___","blankAnswer":"les costumes d'autres sur soi"},{"text":"On ne change pas"},{"text":"Une veste ne cache qu'un peu de ce qu'on voit"},{"text":"On ne grandit pas"},{"text":"On pousse un peu, tout juste le temps d'un rêve, d'un songe","blankTemplate":"On pousse un peu, ___","blankAnswer":"tout juste le temps d'un rêve, d'un songe"},{"text":"Et les toucher du doigt"},{"text":"Mais on n'oublie pas"},{"text":"L'enfant qui reste, presque nu"},{"text":"Les instants d'innocence"},{"text":"Quand on ne savait pas"},{"text":"On ne change pas"},{"text":"On attrape des airs et des poses de combat","blankTemplate":"On attrape des airs et des ___","blankAnswer":"poses de combat"},{"text":"On ne change pas"},{"text":"On se donne le change, on croit que l'on fait des choix","blankTemplate":"On se donne le change, on croit que l'on ___","blankAnswer":"fait des choix"},{"text":"Mais si tu grattes là"},{"text":"Tout près de l'apparence tremble un petit qui nous ressemble","blankTemplate":"Tout près de l'apparence ___ qui nous ressemble","blankAnswer":"tremble un petit"},{"text":"On sait bien qu'il est là"},{"text":"On l'entend parfois"},{"text":"Sa rengaine insolente qui s'entête et qui répète"},{"text":"Oh ne me quitte pas"},{"text":"On n'oublie jamais"},{"text":"On a toujours un geste qui trahit qui l'on est"},{"text":"Un prince, un valet"},{"text":"Sous la couronne un regard une arrogance, un trait"},{"text":"D'un prince ou d'un valet"},{"text":"Je sais tellement ça"},{"text":"J'ai copié des images et des rêves que j'avais"},{"text":"Tous ces milliers de rêves"},{"text":"Mais si près de moi"},{"text":"Une petite fille maigre marche à Charlemagne, inquiète"},{"text":"Et me parle tout bas"},{"text":"On ne change pas, on met juste les costumes d'autres et voilà"},{"text":"On ne change pas, on ne cache qu'un instant de soi"},{"text":"Une petite fille"},{"text":"Ingrate et solitaire marche et rêve dans les neiges en oubliant le froid"},{"text":"Si je la maquille"},{"text":"Elle disparaît un peu, le temps de me regarder faire"},{"text":"Et se moquer de moi"},{"text":"Une petite fille"},{"text":"Une toute petite fille"}],"deezerUrl":"","youtubeUrl":""}];
+        let currentLyricsIndex = 0;
+        let currentLyricsInputs = [];
+        const embeddedLyricsGameData = [{"date":"2026-04-13","titre":"On ne change pas","artiste":"Céline Dion","spotifyUrl":"https://music.youtube.com/watch?v=7mjJn_hQxWE&feature=gws_kp_track","appleMusicUrl":"https://music.apple.com/fr/album/on-ne-change-pas/212137941?i=212137956","lines":[{"text":"On ne change pas"},{"text":"On met juste les costumes d'autres sur soi","blankTemplate":"On met juste___","blankAnswer":"les costumes d'autres sur soi"},{"text":"On ne change pas"},{"text":"Une veste ne cache qu'un peu de ce qu'on voit"},{"text":"On ne grandit pas"},{"text":"On pousse un peu, tout juste le temps d'un rêve, d'un songe","blankTemplate":"On pousse un peu, ___","blankAnswer":"tout juste le temps d'un rêve, d'un songe"},{"text":"Et les toucher du doigt"},{"text":"Mais on n'oublie pas"},{"text":"L'enfant qui reste, presque nu"},{"text":"Les instants d'innocence"},{"text":"Quand on ne savait pas"},{"text":"On ne change pas"},{"text":"On attrape des airs et des poses de combat","blankTemplate":"On attrape des airs et des ___","blankAnswer":"poses de combat"},{"text":"On ne change pas"},{"text":"On se donne le change, on croit que l'on fait des choix","blankTemplate":"On se donne le change, on croit que l'on ___","blankAnswer":"fait des choix"},{"text":"Mais si tu grattes là"},{"text":"Tout près de l'apparence tremble un petit qui nous ressemble","blankTemplate":"Tout près de l'apparence ___ qui nous ressemble","blankAnswer":"tremble un petit"},{"text":"On sait bien qu'il est là"},{"text":"On l'entend parfois"},{"text":"Sa rengaine insolente qui s'entête et qui répète","blankTemplate":"Sa rengaine insolente qui s'entête et qui ___","blankAnswer":"répète"},{"text":"Oh ne me quitte pas"},{"text":"On n'oublie jamais"},{"text":"On a toujours un geste qui trahit qui l'on est"},{"text":"Un prince, un valet"},{"text":"Sous la couronne un regard une arrogance, un trait","blankTemplate":"Sous la couronne ___, un trait","blankAnswer":"un regard une arrogance"},{"text":"D'un prince ou d'un valet"},{"text":"Je sais tellement ça"},{"text":"J'ai copié des images et des rêves que j'avais"},{"text":"Tous ces milliers de rêves","blankTemplate":"___","blankAnswer":"Tous ces milliers de rêves"},{"text":"Mais si près de moi"},{"text":"Une petite fille maigre marche à Charlemagne, inquiète"},{"text":"Et me parle tout bas"},{"text":"On ne change pas, on met juste les costumes d'autres et voilà"},{"text":"On ne change pas, on ne cache qu'un instant de soi"},{"text":"Une petite fille"},{"text":"Ingrate et solitaire marche et rêve dans les neiges en oubliant le froid","blankTemplate":"Ingrate et solitaire marche et rêve dans les neiges ___","blankAnswer":"en oubliant le froid"},{"text":"Si je la maquille"},{"text":"Elle disparaît un peu, le temps de me regarder faire","blankTemplate":"Elle disparaît un peu, ___","blankAnswer":"le temps de me regarder faire"},{"text":"Et se moquer de moi"},{"text":"Une petite fille"},{"text":"Une toute petite fille"}],"deezerUrl":"https://link.deezer.com/s/34ozYo0OAvhqZlCWfftQr","youtubeUrl":"https://youtu.be/3tOsUgwBgko?si=jArNMGRyLFPFOXxA"},{"titre":"Destin","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[{"text":"Y'a pas de voiles aux volets de mes frères"},{"text":"Y'a pas d'opale autour de mes doigts"},{"text":"Ni cathédrale où cacher mes prières"},{"text":"Juste un peu d'or autour de ma voix"},{"text":""},{"text":"Je vais les routes et je vais les frontières"},{"text":"Je sens, j'écoute, et j'apprends, je vois"},{"text":"Le temps s'égoutte au long des fuseaux horaires"},{"text":"Je prends, je donne, avais-je le choix ?"},{"text":""},{"text":"Tel est mon destin"},{"text":"Je vais mon chemin"},{"text":"Ainsi passent mes heures"},{"text":"Au rythme entêtant des battements de mon cœur"},{"text":""},{"text":"Des feux d'été je vole aux sombres hivers"},{"text":"Des pluies d'automne aux étés indiens"},{"text":"Terres gelées aux plus arides déserts"},{"text":"Je vais je viens, ce monde est le mien"},{"text":""},{"text":"Je vis de notes et je vis de lumière"},{"text":"Je virevolte à vos cris, vos mains"},{"text":"La vie m'emporte au creux de tous ses mystères"},{"text":"Je vois dans vos yeux mes lendemains"},{"text":""},{"text":"Tel est mon destin"},{"text":"Je vais mon chemin"},{"text":"Ainsi passent mes heures"},{"text":"Au rythme entêtant des battements de mon cœur"},{"text":""},{"text":"Je vais les routes et je vais les frontières"},{"text":"Je sens, j'écoute, et j'apprends, je vois"},{"text":"Le temps s'égoutte au long des fuseaux horaires"},{"text":"Je prends, je donne, avais-je le choix ?"},{"text":""},{"text":"Je prends le blues aux signaux des répondeurs"},{"text":"Je prends la peine aux aéroports"},{"text":"Je vis l'amour à des kilomètres ailleurs"},{"text":"Et le bonheur à mon téléphone"},{"text":""},{"text":"Tel est mon destin"},{"text":"Je vais mon chemin"},{"text":"Ainsi passent mes heures"},{"text":"Au rythme entêtant des battements de mon cœur"}]},{"titre":"Because You Loved Me","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"Encore un soir","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"Les derniers seront les premiers","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"Tout l'or des hommes","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"The Power Of Love","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"My Heart Will Go On","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"Beauty and the Beast","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"The Chase","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"J'irai où tu iras","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"Ne bouge pas","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"Dans un autre monde","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"I'm Alive","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"That's the Way It Is","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"Dansons","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"Un garçon pas comme les autres","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"Courage","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"Love Can Move Mountains","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"The Prayer","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"It's All Coming Back to Me Now","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"Je chanterai","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"All By Myself","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"Pour que tu m'aimes encore","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]},{"titre":"S'il suffisait qu'on s'aime","artiste":"Céline Dion","spotifyUrl":"","appleMusicUrl":"","deezerUrl":"","youtubeUrl":"","lines":[]}];
 
         function todayDateStr() {
             const today = new Date();
             const yyyy = today.getFullYear();
-            const mm = String(today.getMonth() + 1).padStart(4, '0');
-            const dd = String(today.getDate()).padStart(4, '0');
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
             return `${yyyy}-${mm}-${dd}`;
         }
 
@@ -807,9 +850,12 @@
                 }
 
                 lineEl.classList.add('challenge');
-                const at = line.indexOf(match.answer);
-                const before = line.slice(0, at);
-                const after = line.slice(at + match.answer.length);
+                // Le template est la source d'affichage du trou. Cela évite de
+                // dépendre d'une recherche fragile de blankAnswer dans la ligne.
+                const template = match.template || line.replace(match.answer, '___');
+                const templateParts = template.split('___');
+                const before = templateParts[0] ?? '';
+                const after = templateParts.slice(1).join('___');
 
                 const beforeEl = document.createElement('span');
                 beforeEl.className = 'lyrics-context';
@@ -920,9 +966,8 @@
                     : `Bravo, les ${inputs.length} passages sont retrouvés ! ✨`;
                 feedback.className = 'game-feedback ok';
             } else if (afterValidation) {
-                feedback.textContent = solved > 0
-                    ? `${solved} sur ${inputs.length} : continue, tu y es presque !`
-                    : 'Pas encore, réessaie.';
+                const remaining = inputs.length - solved;
+                feedback.textContent = `Dommage, écoute mieux ! 🎧 Il reste ${remaining} passage${remaining > 1 ? 's' : ''} à retrouver.`;
                 feedback.className = 'game-feedback ko';
             } else {
                 feedback.textContent = '';
@@ -970,22 +1015,165 @@
             });
         }
 
-        async function loadLyricsGame() {
+        function adaptLyricsEntries(raw) {
+            return raw.map(entry => {
+                if (entry.lyrics && Array.isArray(entry.blankCandidates)) return entry;
+                if (Array.isArray(entry.lines)) {
+                    return {
+                        ...entry,
+                        lyrics: entry.lines.map(line => line.text || '').join('\n'),
+                        blankCandidates: entry.lines
+                            .map((line, lineIndex) => ({ line, lineIndex }))
+                            .filter(({ line }) => line.blankTemplate && line.blankAnswer)
+                            .map(({ line, lineIndex }) => ({
+                                answer: line.blankAnswer,
+                                template: line.blankTemplate,
+                                lineIndex
+                            }))
+                    };
+                }
+                return { ...entry, lyrics: entry.lyrics || '', blankCandidates: entry.blankCandidates || [] };
+            });
+        }
+
+        function initialLyricsIndex(entries) {
+            const today = todayDateStr();
+            const byDate = entries.findIndex(entry => entry.date === today);
+            return byDate >= 0 ? byDate : 0;
+        }
+
+        function animateSongChange(direction) {
+            const card = document.getElementById('lyricsGame');
+            if (!card) return;
+            card.classList.remove('swipe-left', 'swipe-right');
+            // force reflow pour rejouer l'animation
+            void card.offsetWidth;
+            card.classList.add(direction > 0 ? 'swipe-left' : 'swipe-right');
+            window.setTimeout(() => card.classList.remove('swipe-left', 'swipe-right'), 260);
+        }
+
+        function renderCurrentLyricsSong(direction = 0) {
             const titleEl = document.getElementById('gameSongTitle');
             const artistEl = document.getElementById('gameSongArtist');
             const lyricsEl = document.getElementById('gameLyrics');
             const linksEl = document.getElementById('gameListenLinks');
             const checkBtn = document.getElementById('gameCheckBtn');
+            const counter = document.getElementById('gameCounter');
+            const feedback = document.getElementById('gameFeedback');
+            const position = document.getElementById('gameSongPosition');
+            const prevBtn = document.getElementById('gamePrevSong');
+            const nextBtn = document.getElementById('gameNextSong');
 
+            const entry = lyricsGameEntries[currentLyricsIndex];
+            if (!entry) {
+                if (titleEl) titleEl.textContent = 'Aucune chanson configurée pour l\'instant';
+                if (lyricsEl) lyricsEl.textContent = 'Ajoute des chansons dans parolesdujour.json.';
+                if (checkBtn) checkBtn.style.display = 'none';
+                if (counter) counter.textContent = '0 / 0';
+                if (position) position.textContent = '0 / 0';
+                return;
+            }
+
+            if (direction) animateSongChange(direction);
+            if (titleEl) titleEl.textContent = entry.titre || '';
+            if (artistEl) artistEl.textContent = entry.artiste || 'Céline Dion';
+            if (position) position.textContent = `${currentLyricsIndex + 1} / ${lyricsGameEntries.length}`;
+            if (prevBtn) prevBtn.disabled = lyricsGameEntries.length < 2;
+            if (nextBtn) nextBtn.disabled = lyricsGameEntries.length < 2;
+            if (feedback) {
+                feedback.textContent = '';
+                feedback.className = 'game-feedback';
+            }
+            renderListenPlatforms(linksEl, entry);
+
+            // IMPORTANT : on envoie TOUS les blankCandidates au rendu.
+            // Aucune slice(), aucun blanksPerRound, aucune limite à 5.
+            currentLyricsInputs = renderLyrics(entry, entry.blankCandidates || []);
+
+            if (currentLyricsInputs.length === 0) {
+                if (counter) counter.textContent = '0 passage';
+                if (checkBtn) checkBtn.style.display = 'none';
+                if (lyricsEl && !(entry.lyrics || '').trim()) {
+                    lyricsEl.textContent = 'Les paroles de cette chanson ne sont pas encore renseignées.';
+                }
+                if (feedback && (entry.lyrics || '').trim()) {
+                    feedback.textContent = 'Lecture libre : aucun passage à compléter n\'est encore configuré pour cette chanson.';
+                    feedback.className = 'game-feedback';
+                }
+                return;
+            }
+
+            updateLyricsGameStatus(currentLyricsInputs);
+            if (checkBtn) {
+                checkBtn.textContent = currentLyricsInputs.length === 1
+                    ? 'Vérifier ma réponse'
+                    : `Vérifier mes ${currentLyricsInputs.length} réponses`;
+                checkBtn.style.display = '';
+                checkBtn.onclick = () => {
+                    currentLyricsInputs.forEach(input => {
+                        if (input.dataset.solved === 'true') return;
+                        if (isCloseEnough(input.value, input.dataset.answer)) {
+                            markCorrect(input);
+                        } else {
+                            input.classList.remove('correct');
+                            input.classList.add('wrong');
+                        }
+                    });
+                    updateLyricsGameStatus(currentLyricsInputs, true);
+                    const firstWrong = currentLyricsInputs.find(input => input.dataset.solved !== 'true');
+                    if (firstWrong) {
+                        firstWrong.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        window.setTimeout(() => firstWrong.focus(), 250);
+                    }
+                };
+            }
+        }
+
+        function changeLyricsSong(delta) {
+            if (lyricsGameEntries.length < 2) return;
+            const count = lyricsGameEntries.length;
+            currentLyricsIndex = (currentLyricsIndex + delta + count) % count;
+            renderCurrentLyricsSong(delta);
+        }
+
+        function setupLyricsNavigation() {
+            document.getElementById('gamePrevSong')?.addEventListener('click', () => changeLyricsSong(-1));
+            document.getElementById('gameNextSong')?.addEventListener('click', () => changeLyricsSong(1));
+
+            const card = document.getElementById('lyricsGame');
+            if (!card) return;
+            let startX = 0;
+            let startY = 0;
+            let swipeAllowed = false;
+
+            card.addEventListener('touchstart', event => {
+                const target = event.target;
+                if (target instanceof HTMLElement && target.closest('input, button, a')) {
+                    swipeAllowed = false;
+                    return;
+                }
+                const touch = event.changedTouches[0];
+                startX = touch.clientX;
+                startY = touch.clientY;
+                swipeAllowed = true;
+            }, { passive: true });
+
+            card.addEventListener('touchend', event => {
+                if (!swipeAllowed) return;
+                const touch = event.changedTouches[0];
+                const dx = touch.clientX - startX;
+                const dy = touch.clientY - startY;
+                swipeAllowed = false;
+                if (Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
+                // Swipe vers la gauche = chanson suivante ; vers la droite = précédente.
+                changeLyricsSong(dx < 0 ? 1 : -1);
+            }, { passive: true });
+        }
+
+        async function loadLyricsGame() {
             try {
                 let raw = embeddedLyricsGameData;
 
-                // Sur un vrai serveur (GitHub Pages, localhost, hébergement…),
-                // on recharge le JSON externe afin que tes modifications de
-                // paroles soient prises en compte sans toucher au HTML.
-                // En ouverture directe file://, les navigateurs bloquent
-                // généralement fetch() : la copie embarquée ci-dessus sert
-                // alors automatiquement de secours.
                 if (window.location.protocol !== 'file:') {
                     try {
                         const response = await fetch('./parolesdujour.json', { cache: 'no-store' });
@@ -997,71 +1185,19 @@
                 }
 
                 if (!Array.isArray(raw)) throw new Error('Le fichier parolesdujour.json doit contenir un tableau JSON.');
-
-                // Compatibilité avec le format lines[] (texte ligne par ligne +
-                // blankTemplate/blankAnswer sur les lignes à trou) : on le
-                // convertit ici en lyrics (texte complet) + blankCandidates.
-                const adapted = raw.map(entry => {
-                    if (entry.lyrics && Array.isArray(entry.blankCandidates)) return entry;
-                    if (Array.isArray(entry.lines)) {
-                        return {
-                            ...entry,
-                            lyrics: entry.lines.map(l => l.text || '').join('\n'),
-                            blankCandidates: entry.lines
-                                .map((line, lineIndex) => ({ line, lineIndex }))
-                                .filter(({ line }) => line.blankTemplate && line.blankAnswer)
-                                .map(({ line, lineIndex }) => ({
-                                    answer: line.blankAnswer,
-                                    template: line.blankTemplate,
-                                    lineIndex
-                                })),
-                        };
-                    }
-                    return entry;
-                });
-
-                lyricsGameEntries = adapted.filter(entry =>
-                    entry.lyrics && Array.isArray(entry.blankCandidates) && entry.blankCandidates.length >= 1
-                );
+                // Toutes les chansons sont conservées, même si leurs trous ne sont pas encore configurés.
+                lyricsGameEntries = adaptLyricsEntries(raw).filter(entry => entry && entry.titre);
+                currentLyricsIndex = initialLyricsIndex(lyricsGameEntries);
             } catch (error) {
-                console.error('Erreur lors du chargement du jeu du jour :', error);
+                console.error('Erreur lors du chargement du jeu :', error);
                 lyricsGameEntries = [];
+                currentLyricsIndex = 0;
             }
 
-            const entry = pickTodayLyricsEntry(lyricsGameEntries);
-            if (!entry) {
-                if (titleEl) titleEl.textContent = 'Aucune chanson configurée pour l\'instant';
-                if (lyricsEl) lyricsEl.textContent = 'Cette chanson ne contient encore aucun passage avec blankTemplate + blankAnswer.';
-                if (checkBtn) checkBtn.style.display = 'none';
-                return;
-            }
-
-            if (titleEl) titleEl.textContent = entry.titre || '';
-            if (artistEl) artistEl.textContent = entry.artiste || 'Céline Dion';
-            renderListenPlatforms(linksEl, entry);
-
-            const inputs = renderLyrics(entry, entry.blankCandidates);
-            updateLyricsGameStatus(inputs);
-
-            if (checkBtn) {
-                checkBtn.textContent = inputs.length === 1
-                    ? 'Vérifier ma réponse'
-                    : `Vérifier mes ${inputs.length} réponses`;
-                checkBtn.style.display = '';
-                checkBtn.onclick = () => {
-                    inputs.forEach(input => {
-                        if (input.dataset.solved === 'true') return;
-                        if (isCloseEnough(input.value, input.dataset.answer)) {
-                            markCorrect(input);
-                        } else {
-                            input.classList.remove('correct');
-                            input.classList.add('wrong');
-                        }
-                    });
-                    updateLyricsGameStatus(inputs, true);
-                };
-            }
+            setupLyricsNavigation();
+            renderCurrentLyricsSong();
         }
+
 
 
     updateProgress();
