@@ -138,6 +138,8 @@
       },
       {
         "text": "Elle disparaît un peu, le temps de me regarder faire"
+        "blankTemplate": "Elle disparaît un peu, ___",
+        "blankAnswer": "le temps de me regarder faire"
       },
       {
         "text": "Et se moquer de moi"
@@ -149,7 +151,7 @@
         "text": "Une toute petite fille"
       }
     ],
-    "deezerUrl": "",
-    "youtubeUrl": ""
+    "deezerUrl": "https://link.deezer.com/s/34ozYo0OAvhqZlCWfftQr",
+    "youtubeUrl": "https://youtu.be/3tOsUgwBgko?si=jArNMGRyLFPFOXxA"
   }
 ]
