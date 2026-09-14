@@ -694,6 +694,7 @@
         // autorisés à disparaître. Le rechargement de la page en choisit 2 autres.
 
         let lyricsGameEntries = [];
+        const embeddedLyricsGameData = [{"date":"2026-04-13","titre":"On ne change pas","artiste":"Céline Dion","spotifyUrl":"https://music.youtube.com/watch?v=7mjJn_hQxWE&feature=gws_kp_track","appleMusicUrl":"https://music.apple.com/fr/album/on-ne-change-pas/212137941?i=212137956","blanksPerRound":2,"lines":[{"text":"On ne change pas"},{"text":"On met juste les costumes d'autres sur soi","blankTemplate":"On met juste___","blankAnswer":"les costumes d'autres sur soi"},{"text":"On ne change pas"},{"text":"Une veste ne cache qu'un peu de ce qu'on voit"},{"text":"On ne grandit pas"},{"text":"On pousse un peu, tout juste le temps d'un rêve, d'un songe","blankTemplate":"On pousse un peu, ___","blankAnswer":"tout juste le temps d'un rêve, d'un songe"},{"text":"Et les toucher du doigt"},{"text":"Mais on n'oublie pas"},{"text":"L'enfant qui reste, presque nu"},{"text":"Les instants d'innocence"},{"text":"Quand on ne savait pas"},{"text":"On ne change pas"},{"text":"On attrape des airs et des poses de combat"},{"text":"On ne change pas"},{"text":"On se donne le change, on croit que l'on fait des choix"},{"text":"Mais si tu grattes là"},{"text":"Tout près de l'apparence tremble un petit qui nous ressemble"},{"text":"On sait bien qu'il est là"},{"text":"On l'entend parfois"},{"text":"Sa rengaine insolente qui s'entête et qui répète"},{"text":"Oh ne me quitte pas"},{"text":"On n'oublie jamais"},{"text":"On a toujours un geste qui trahit qui l'on est"},{"text":"Un prince, un valet"},{"text":"Sous la couronne un regard une arrogance, un trait"},{"text":"D'un prince ou d'un valet"},{"text":"Je sais tellement ça"},{"text":"J'ai copié des images et des rêves que j'avais"},{"text":"Tous ces milliers de rêves"},{"text":"Mais si près de moi"},{"text":"Une petite fille maigre marche à Charlemagne, inquiète"},{"text":"Et me parle tout bas"},{"text":"On ne change pas, on met juste les costumes d'autres et voilà"},{"text":"On ne change pas, on ne cache qu'un instant de soi"},{"text":"Une petite fille"},{"text":"Ingrate et solitaire marche et rêve dans les neiges en oubliant le froid"},{"text":"Si je la maquille"},{"text":"Elle disparaît un peu, le temps de me regarder faire"},{"text":"Et se moquer de moi"},{"text":"Une petite fille"},{"text":"Une toute petite fille"}],"deezerUrl":"","youtubeUrl":""}];
 
         function todayDateStr() {
             const today = new Date();
@@ -983,10 +984,10 @@
         }
 
         const musicPlatforms = [
-            { id: 'spotify', label: 'Spotify', icon: './assets/platforms/spotify.svg', field: 'spotifyUrl' },
-            { id: 'youtube', label: 'YouTube', icon: './assets/platforms/youtube.svg', field: 'youtubeUrl' },
-            { id: 'apple', label: 'Apple Music', icon: './assets/platforms/apple.svg', field: 'appleMusicUrl' },
-            { id: 'deezer', label: 'Deezer', icon: './assets/platforms/deezer.svg', field: 'deezerUrl' }
+            { id: 'spotify', label: 'Spotify', icon: './spotify.svg', field: 'spotifyUrl' },
+            { id: 'youtube', label: 'YouTube', icon: './youtube.svg', field: 'youtubeUrl' },
+            { id: 'apple', label: 'Apple Music', icon: './apple.svg', field: 'appleMusicUrl' },
+            { id: 'deezer', label: 'Deezer', icon: './deezer.svg', field: 'deezerUrl' }
         ];
 
         function buildMusicSearchUrl(platform, title, artist) {
@@ -1030,15 +1031,29 @@
             const checkBtn = document.getElementById('gameCheckBtn');
 
             try {
-                const response = await fetch('./parolesdujour.json');
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const raw = await response.json();
+                let raw = embeddedLyricsGameData;
+
+                // Sur un vrai serveur (GitHub Pages, localhost, hébergement…),
+                // on recharge le JSON externe afin que tes modifications de
+                // paroles soient prises en compte sans toucher au HTML.
+                // En ouverture directe file://, les navigateurs bloquent
+                // généralement fetch() : la copie embarquée ci-dessus sert
+                // alors automatiquement de secours.
+                if (window.location.protocol !== 'file:') {
+                    try {
+                        const response = await fetch('./parolesdujour.json', { cache: 'no-store' });
+                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                        raw = await response.json();
+                    } catch (fetchError) {
+                        console.warn('JSON externe indisponible, utilisation des paroles embarquées :', fetchError);
+                    }
+                }
+
+                if (!Array.isArray(raw)) throw new Error('Le fichier parolesdujour.json doit contenir un tableau JSON.');
 
                 // Compatibilité avec le format lines[] (texte ligne par ligne +
                 // blankTemplate/blankAnswer sur les lignes à trou) : on le
-                // convertit ici en lyrics (texte complet) + blankCandidates
-                // (liste des réponses), sans jamais lire ni modifier le
-                // contenu réel des paroles.
+                // convertit ici en lyrics (texte complet) + blankCandidates.
                 const adapted = raw.map(entry => {
                     if (entry.lyrics && Array.isArray(entry.blankCandidates)) return entry;
                     if (Array.isArray(entry.lines)) {
@@ -1064,7 +1079,7 @@
             const entry = pickTodayLyricsEntry(lyricsGameEntries);
             if (!entry) {
                 if (titleEl) titleEl.textContent = 'Aucune chanson configurée pour l\'instant';
-                if (lyricsEl) lyricsEl.textContent = 'Ajoute des paroles et au moins 2 passages possibles.';
+                if (lyricsEl) lyricsEl.textContent = 'Cette chanson doit contenir au moins 2 lignes avec blankTemplate + blankAnswer.';
                 if (checkBtn) checkBtn.style.display = 'none';
                 return;
             }
