@@ -12,7 +12,7 @@
       },
       {
         "text": "On met juste les costumes d'autres sur soi",
-        "blankTemplate": "On met juste ___",
+        "blankTemplate": "On met juste___",
         "blankAnswer": "les costumes d'autres sur soi"
       },
       {
