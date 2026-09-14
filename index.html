@@ -597,12 +597,12 @@
                 <div class="game-divider"></div>
                 <div class="game-kicker">Jeu | Retrouve les paroles</div>
                 <div class="game-header">
-                    <p class="game-instruction">Les paroles sont affichées en entier, mais 2 passages ont disparu. À toi de les retrouver. Si t'as la flemme d'écrire, tu peux utiliser le dictaphone et kiffer au max.</p>
-                    <span class="game-counter" id="gameCounter">0 / 2</span>
+                    <p class="game-instruction">Les paroles sont affichées en entier, mais 2 passages ont disparu.<br>À toi de les retrouver.<br>Si t'as la flemme d'écrire, tu peux utiliser le dictaphone et kiffer au max.</p>
+                    <span class="game-counter" id="gameCounter">0 / 4</span>
                 </div>
                 <div class="lyrics-sheet" id="gameLyrics" aria-live="polite"></div>
                 <div class="game-actions">
-                    <button class="game-check-btn" id="gameCheckBtn">Vérifier mes 2 réponses</button>
+                    <button class="game-check-btn" id="gameCheckBtn">Vérifier mes 4 réponses</button>
                     <span class="game-feedback" id="gameFeedback"></span>
                 </div>
             </div>
@@ -699,8 +699,8 @@
         function todayDateStr() {
             const today = new Date();
             const yyyy = today.getFullYear();
-            const mm = String(today.getMonth() + 1).padStart(2, '0');
-            const dd = String(today.getDate()).padStart(2, '0');
+            const mm = String(today.getMonth() + 1).padStart(4, '0');
+            const dd = String(today.getDate()).padStart(4, '0');
             return `${yyyy}-${mm}-${dd}`;
         }
 
@@ -716,7 +716,7 @@
                 const j = Math.floor(Math.random() * (i + 1));
                 [copy[i], copy[j]] = [copy[j], copy[i]];
             }
-            return copy.slice(0, Math.min(2, copy.length));
+            return copy.slice(0, Math.min(4, copy.length));
         }
 
         function normalizeAnswer(value) {
