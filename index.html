@@ -263,10 +263,10 @@
             overflow: hidden;
             background: linear-gradient(180deg, #ffffff 0%, #fbf8fd 100%);
         }
-        .game-header { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:12px; }
+        .game-header { display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:14px; }
         .game-song-title { font-size:16px; font-weight:800; color:var(--text); margin:0 0 3px; }
-        .game-instruction { margin:0; font-size:11px; line-height:1.45; color:var(--muted); font-weight:500; }
-        .game-counter { flex:0 0 auto; min-width:42px; padding:5px 9px; border-radius:999px; background:#f3eaf7; color:var(--accent); font-size:11px; font-weight:800; text-align:center; }
+        .game-instruction { flex:1 1 auto; min-width:0; max-width:560px; margin:0; font-size:12px; line-height:1.58; color:var(--muted); font-weight:520; text-wrap:pretty; }
+        .game-counter { flex:0 0 auto; min-width:52px; padding:6px 10px; border-radius:999px; background:#f3eaf7; color:var(--accent); font-size:11px; font-weight:800; text-align:center; }
         .section-title {
             margin:0 0 5px;
             color:#26272d;
@@ -387,39 +387,47 @@
         }
         .lyrics-line + .lyrics-line { margin-top:2px; }
 
-        /* Les deux lignes à jouer restent dans le flux des paroles :
+        /* Les lignes à compléter restent dans le flux des paroles :
            aucun gros encadré autour de la phrase. */
         .lyrics-line.challenge {
-            margin:3px 0;
-            padding:1px 0;
+            display:flex;
+            flex-wrap:wrap;
+            align-items:center;
+            column-gap:5px;
+            row-gap:6px;
+            margin:5px 0;
+            padding:2px 0;
             background:transparent;
             border:0;
             border-radius:0;
+            line-height:1.5;
             animation:challenge-arrive 430ms ease both;
         }
         .lyrics-context {
-            display:inline;
-            font-size:11.5px;
-            line-height:1.45;
-            color:#8e8792;
+            flex:0 1 auto;
+            min-width:0;
+            font-size:12px;
+            line-height:1.55;
+            color:#7f7884;
             font-weight:620;
-            vertical-align:middle;
-            opacity:.82;
+            overflow-wrap:anywhere;
+            opacity:.88;
             animation:context-arrive 520ms ease both;
         }
         .lyrics-gap-wrap {
             display:inline-flex;
             position:relative;
+            flex:0 1 auto;
+            max-width:100%;
             align-items:center;
-            vertical-align:middle;
-            margin:2px 4px;
+            margin:1px 2px;
         }
         .game-blank-input {
             width:min(var(--gap-width, 220px), 100%);
             max-width:340px;
             min-width:140px;
             height:44px;
-            padding:4px 60px 3px 12px;
+            padding:4px 34px 3px 12px;
             border:2px solid #d9c3e4;
             border-bottom:2px solid #b985c9;
             border-radius:10px;
@@ -473,33 +481,6 @@
             padding:0;
         }
         .gap-clear-btn.visible { display:flex; }
-        .gap-mic-btn {
-            position:absolute;
-            right:30px;
-            top:50%;
-            transform:translateY(-50%);
-            width:24px;
-            height:24px;
-            border:none;
-            border-radius:50%;
-            background:var(--accent);
-            color:#fff;
-            font-size:12px;
-            line-height:1;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            cursor:pointer;
-            padding:0;
-        }
-        .gap-mic-btn.hidden { display:none; }
-        .gap-mic-btn.listening {
-            animation:mic-pulse 1s ease-in-out infinite;
-        }
-        @keyframes mic-pulse {
-            0%, 100% { box-shadow:0 0 0 0 rgba(143,63,170,.5); }
-            50% { box-shadow:0 0 0 6px rgba(143,63,170,0); }
-        }
         .success-badge {
             position:absolute;
             right:-5px;
@@ -538,9 +519,11 @@
             .platform-btn { min-height:30px; padding:5px 9px; font-size:10px; }
             .lyrics-sheet { max-height:350px; padding:14px 10px 16px; }
             .lyrics-line { font-size:13.5px; line-height:1.78; }
-            .lyrics-line.challenge { line-height:2.05; }
-            .lyrics-context { font-size:10.8px; }
-            .game-blank-input { max-width:calc(100vw - 105px); min-width:130px; font-size:16px; height:44px; }
+            .game-header { align-items:flex-start; gap:10px; }
+            .game-instruction { font-size:11.5px; line-height:1.55; }
+            .lyrics-line.challenge { align-items:center; row-gap:7px; line-height:1.5; }
+            .lyrics-context { font-size:11.3px; line-height:1.5; }
+            .game-blank-input { width:min(var(--gap-width, 220px), calc(100vw - 78px)); max-width:100%; min-width:128px; font-size:16px; height:44px; }
             .game-blank-input::placeholder { font-size:16px; }
         }
     </style>
@@ -571,13 +554,13 @@
                 <p class="section-subtitle">Retrouvez Céline Dion sur votre plateforme préférée.</p>
                 <div class="lineup-platforms">
                     <a class="platform-btn" href="https://open.spotify.com/search/C%C3%A9line%20Dion" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir Céline Dion sur Spotify">
-                        <img src="./assets/platforms/spotify.svg" alt="" aria-hidden="true"><span>Spotify</span>
+                        <img src="./spotify.svg" alt="" aria-hidden="true"><span>Spotify</span>
                     </a>
                     <a class="platform-btn" href="https://www.deezer.com/search/C%C3%A9line%20Dion" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir Céline Dion sur Deezer">
-                        <img src="./assets/platforms/deezer.svg" alt="" aria-hidden="true"><span>Deezer</span>
+                        <img src="./deezer.svg" alt="" aria-hidden="true"><span>Deezer</span>
                     </a>
                     <a class="platform-btn" href="https://music.apple.com/fr/search?term=C%C3%A9line%20Dion" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir Céline Dion sur Apple Music">
-                        <img src="./assets/platforms/apple.svg" alt="" aria-hidden="true"><span>Apple Music</span>
+                        <img src="./apple.svg" alt="" aria-hidden="true"><span>Apple Music</span>
                     </a>
                 </div>
             </div>
@@ -597,12 +580,12 @@
                 <div class="game-divider"></div>
                 <div class="game-kicker">Jeu | Retrouve les paroles</div>
                 <div class="game-header">
-                    <p class="game-instruction">Les paroles sont affichées en entier, mais 2 passages ont disparu.<br>À toi de les retrouver.<br>Si t'as la flemme d'écrire, tu peux utiliser le dictaphone et kiffer au max.</p>
-                    <span class="game-counter" id="gameCounter">0 / 4</span>
+                    <p class="game-instruction">Complète tous les passages masqués dans les paroles. Les petites fautes de saisie sont tolérées.</p>
+                    <span class="game-counter" id="gameCounter">0 / —</span>
                 </div>
                 <div class="lyrics-sheet" id="gameLyrics" aria-live="polite"></div>
                 <div class="game-actions">
-                    <button class="game-check-btn" id="gameCheckBtn">Vérifier mes 4 réponses</button>
+                    <button class="game-check-btn" id="gameCheckBtn">Vérifier mes réponses</button>
                     <span class="game-feedback" id="gameFeedback"></span>
                 </div>
             </div>
@@ -689,12 +672,12 @@
         }
 
         // ══════════════════════════════════════════════════════════════════
-        // JEU DU JOUR — paroles complètes + exactement 2 passages masqués au hasard.
+        // JEU DU JOUR — paroles complètes + tous les passages configurés dans le JSON.
         // `lyrics` contient le texte affiché et `blankCandidates` les passages
         // autorisés à disparaître. Le rechargement de la page en choisit 2 autres.
 
         let lyricsGameEntries = [];
-        const embeddedLyricsGameData = [{"date":"2026-04-13","titre":"On ne change pas","artiste":"Céline Dion","spotifyUrl":"https://open.spotify.com/intl-fr/track/06T13g0Hh00zWwMjtpqIKU?si=54a3960a7877408a","appleMusicUrl":"https://music.apple.com/ci/album/on-ne-change-pas/6771941211","blanksPerRound":2,"lines":[{"text":"On ne change pas"},{"text":"On met juste les costumes d'autres sur soi","blankTemplate":"On met juste___","blankAnswer":"les costumes d'autres sur soi"},{"text":"On ne change pas"},{"text":"Une veste ne cache qu'un peu de ce qu'on voit"},{"text":"On ne grandit pas"},{"text":"On pousse un peu, tout juste le temps d'un rêve, d'un songe","blankTemplate":"On pousse un peu, ___","blankAnswer":"tout juste le temps d'un rêve, d'un songe"},{"text":"Et les toucher du doigt"},{"text":"Mais on n'oublie pas"},{"text":"L'enfant qui reste, presque nu"},{"text":"Les instants d'innocence"},{"text":"Quand on ne savait pas"},{"text":"On ne change pas"},{"text":"On attrape des airs et des poses de combat"},{"text":"On ne change pas"},{"text":"On se donne le change, on croit que l'on fait des choix"},{"text":"Mais si tu grattes là"},{"text":"Tout près de l'apparence tremble un petit qui nous ressemble"},{"text":"On sait bien qu'il est là"},{"text":"On l'entend parfois"},{"text":"Sa rengaine insolente qui s'entête et qui répète"},{"text":"Oh ne me quitte pas"},{"text":"On n'oublie jamais"},{"text":"On a toujours un geste qui trahit qui l'on est"},{"text":"Un prince, un valet"},{"text":"Sous la couronne un regard une arrogance, un trait"},{"text":"D'un prince ou d'un valet"},{"text":"Je sais tellement ça"},{"text":"J'ai copié des images et des rêves que j'avais"},{"text":"Tous ces milliers de rêves"},{"text":"Mais si près de moi"},{"text":"Une petite fille maigre marche à Charlemagne, inquiète"},{"text":"Et me parle tout bas"},{"text":"On ne change pas, on met juste les costumes d'autres et voilà"},{"text":"On ne change pas, on ne cache qu'un instant de soi"},{"text":"Une petite fille"},{"text":"Ingrate et solitaire marche et rêve dans les neiges en oubliant le froid"},{"text":"Si je la maquille"},{"text":"Elle disparaît un peu, le temps de me regarder faire"},{"text":"Et se moquer de moi"},{"text":"Une petite fille"},{"text":"Une toute petite fille"}],"deezerUrl":"https://link.deezer.com/s/34ozYo0OAvhqZlCWfftQr","youtubeUrl":"https://youtu.be/3tOsUgwBgko?si=a9jed7GlxgO0wFpt"}];
+        const embeddedLyricsGameData = [{"date":"2026-04-13","titre":"On ne change pas","artiste":"Céline Dion","spotifyUrl":"https://music.youtube.com/watch?v=7mjJn_hQxWE&feature=gws_kp_track","appleMusicUrl":"https://music.apple.com/fr/album/on-ne-change-pas/212137941?i=212137956","lines":[{"text":"On ne change pas"},{"text":"On met juste les costumes d'autres sur soi","blankTemplate":"On met juste___","blankAnswer":"les costumes d'autres sur soi"},{"text":"On ne change pas"},{"text":"Une veste ne cache qu'un peu de ce qu'on voit"},{"text":"On ne grandit pas"},{"text":"On pousse un peu, tout juste le temps d'un rêve, d'un songe","blankTemplate":"On pousse un peu, ___","blankAnswer":"tout juste le temps d'un rêve, d'un songe"},{"text":"Et les toucher du doigt"},{"text":"Mais on n'oublie pas"},{"text":"L'enfant qui reste, presque nu"},{"text":"Les instants d'innocence"},{"text":"Quand on ne savait pas"},{"text":"On ne change pas"},{"text":"On attrape des airs et des poses de combat","blankTemplate":"On attrape des airs et des ___","blankAnswer":"poses de combat"},{"text":"On ne change pas"},{"text":"On se donne le change, on croit que l'on fait des choix","blankTemplate":"On se donne le change, on croit que l'on ___","blankAnswer":"fait des choix"},{"text":"Mais si tu grattes là"},{"text":"Tout près de l'apparence tremble un petit qui nous ressemble","blankTemplate":"Tout près de l'apparence ___ qui nous ressemble","blankAnswer":"tremble un petit"},{"text":"On sait bien qu'il est là"},{"text":"On l'entend parfois"},{"text":"Sa rengaine insolente qui s'entête et qui répète"},{"text":"Oh ne me quitte pas"},{"text":"On n'oublie jamais"},{"text":"On a toujours un geste qui trahit qui l'on est"},{"text":"Un prince, un valet"},{"text":"Sous la couronne un regard une arrogance, un trait"},{"text":"D'un prince ou d'un valet"},{"text":"Je sais tellement ça"},{"text":"J'ai copié des images et des rêves que j'avais"},{"text":"Tous ces milliers de rêves"},{"text":"Mais si près de moi"},{"text":"Une petite fille maigre marche à Charlemagne, inquiète"},{"text":"Et me parle tout bas"},{"text":"On ne change pas, on met juste les costumes d'autres et voilà"},{"text":"On ne change pas, on ne cache qu'un instant de soi"},{"text":"Une petite fille"},{"text":"Ingrate et solitaire marche et rêve dans les neiges en oubliant le froid"},{"text":"Si je la maquille"},{"text":"Elle disparaît un peu, le temps de me regarder faire"},{"text":"Et se moquer de moi"},{"text":"Une petite fille"},{"text":"Une toute petite fille"}],"deezerUrl":"","youtubeUrl":""}];
 
         function todayDateStr() {
             const today = new Date();
@@ -710,14 +693,6 @@
             return byDate || entries[0];
         }
 
-        function sampleTwo(items) {
-            const copy = [...items];
-            for (let i = copy.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [copy[i], copy[j]] = [copy[j], copy[i]];
-            }
-            return copy.slice(0, Math.min(4, copy.length));
-        }
 
         function normalizeAnswer(value) {
             return (value || '')
@@ -730,56 +705,6 @@
                 .toLowerCase();
         }
 
-        // Détection du support de la reconnaissance vocale (Web Speech API).
-        // Safari iOS la supporte partiellement depuis iOS 14.5 via webkitSpeechRecognition ;
-        // si absente, on masque simplement le bouton micro (pas de fausse promesse).
-        const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-        function wireMicButton(micBtn, input, clearBtn) {
-            if (!SpeechRecognitionCtor) {
-                micBtn.classList.add('hidden');
-                return;
-            }
-
-            let recognition = null;
-            let listening = false;
-
-            micBtn.addEventListener('click', () => {
-                if (listening) {
-                    recognition && recognition.stop();
-                    return;
-                }
-
-                recognition = new SpeechRecognitionCtor();
-                recognition.lang = 'fr-FR';
-                recognition.interimResults = false;
-                recognition.maxAlternatives = 1;
-
-                recognition.onstart = () => {
-                    listening = true;
-                    micBtn.classList.add('listening');
-                };
-
-                recognition.onresult = (event) => {
-                    const transcript = event.results[0][0].transcript;
-                    input.value = transcript;
-                    input.dispatchEvent(new Event('input', { bubbles: true }));
-                    input.focus();
-                };
-
-                recognition.onerror = () => {
-                    listening = false;
-                    micBtn.classList.remove('listening');
-                };
-
-                recognition.onend = () => {
-                    listening = false;
-                    micBtn.classList.remove('listening');
-                };
-
-                recognition.start();
-            });
-        }
 
         // Distance de Levenshtein (nombre minimal de lettres à changer pour
         // passer d'un mot à l'autre) — sert à tolérer les petites fautes de
@@ -870,10 +795,10 @@
             }));
             const inputs = [];
 
-            (entry.lyrics || '').split(/\r?\n/).forEach(line => {
+            (entry.lyrics || '').split(/\r?\n/).forEach((line, lineIndex) => {
                 const lineEl = document.createElement('p');
                 lineEl.className = 'lyrics-line';
-                const match = selected.find(item => item.answer && line.includes(item.answer));
+                const match = selected.find(item => item.answer && ((Number.isInteger(item.lineIndex) && item.lineIndex === lineIndex) || (!Number.isInteger(item.lineIndex) && line.includes(item.answer))));
 
                 if (!match) {
                     lineEl.textContent = line || '\u00a0';
@@ -930,19 +855,12 @@
                     input.focus();
                 });
 
-                const micBtn = document.createElement('button');
-                micBtn.type = 'button';
-                micBtn.className = 'gap-mic-btn';
-                micBtn.textContent = '🎤';
-                micBtn.setAttribute('aria-label', 'Dicter la réponse au micro');
-                wireMicButton(micBtn, input, clearBtn);
 
                 const badge = document.createElement('span');
                 badge.className = 'success-badge';
                 badge.textContent = '✓';
 
                 wrapper.appendChild(input);
-                wrapper.appendChild(micBtn);
                 wrapper.appendChild(clearBtn);
                 wrapper.appendChild(badge);
                 lineEl.appendChild(wrapper);
@@ -996,11 +914,15 @@
             if (counter) counter.textContent = `${solved} / ${inputs.length}`;
             if (!feedback) return;
 
-            if (solved === 2 && inputs.length === 2) {
-                feedback.textContent = 'Bravo, les 2 passages sont retrouvés ! ✨';
+            if (inputs.length > 0 && solved === inputs.length) {
+                feedback.textContent = inputs.length === 1
+                    ? 'Bravo, le passage est retrouvé ! ✨'
+                    : `Bravo, les ${inputs.length} passages sont retrouvés ! ✨`;
                 feedback.className = 'game-feedback ok';
             } else if (afterValidation) {
-                feedback.textContent = solved === 1 ? '1 sur 2 : presque !' : 'Pas encore, réessaie.';
+                feedback.textContent = solved > 0
+                    ? `${solved} sur ${inputs.length} : continue, tu y es presque !`
+                    : 'Pas encore, réessaie.';
                 feedback.className = 'game-feedback ko';
             } else {
                 feedback.textContent = '';
@@ -1086,15 +1008,20 @@
                             ...entry,
                             lyrics: entry.lines.map(l => l.text || '').join('\n'),
                             blankCandidates: entry.lines
-                                .filter(l => l.blankTemplate && l.blankAnswer)
-                                .map(l => ({ answer: l.blankAnswer })),
+                                .map((line, lineIndex) => ({ line, lineIndex }))
+                                .filter(({ line }) => line.blankTemplate && line.blankAnswer)
+                                .map(({ line, lineIndex }) => ({
+                                    answer: line.blankAnswer,
+                                    template: line.blankTemplate,
+                                    lineIndex
+                                })),
                         };
                     }
                     return entry;
                 });
 
                 lyricsGameEntries = adapted.filter(entry =>
-                    entry.lyrics && Array.isArray(entry.blankCandidates) && entry.blankCandidates.length >= 2
+                    entry.lyrics && Array.isArray(entry.blankCandidates) && entry.blankCandidates.length >= 1
                 );
             } catch (error) {
                 console.error('Erreur lors du chargement du jeu du jour :', error);
@@ -1104,7 +1031,7 @@
             const entry = pickTodayLyricsEntry(lyricsGameEntries);
             if (!entry) {
                 if (titleEl) titleEl.textContent = 'Aucune chanson configurée pour l\'instant';
-                if (lyricsEl) lyricsEl.textContent = 'Cette chanson doit contenir au moins 2 lignes avec blankTemplate + blankAnswer.';
+                if (lyricsEl) lyricsEl.textContent = 'Cette chanson ne contient encore aucun passage avec blankTemplate + blankAnswer.';
                 if (checkBtn) checkBtn.style.display = 'none';
                 return;
             }
@@ -1113,10 +1040,13 @@
             if (artistEl) artistEl.textContent = entry.artiste || 'Céline Dion';
             renderListenPlatforms(linksEl, entry);
 
-            const inputs = renderLyrics(entry, sampleTwo(entry.blankCandidates));
+            const inputs = renderLyrics(entry, entry.blankCandidates);
             updateLyricsGameStatus(inputs);
 
             if (checkBtn) {
+                checkBtn.textContent = inputs.length === 1
+                    ? 'Vérifier ma réponse'
+                    : `Vérifier mes ${inputs.length} réponses`;
                 checkBtn.style.display = '';
                 checkBtn.onclick = () => {
                     inputs.forEach(input => {
