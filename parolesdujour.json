@@ -76,8 +76,10 @@
       },
       {
         "text": "Sa rengaine insolente qui s'entête et qui répète"
+        "blankTemplate": "Sa rengaine insolente qui s'entête et qui ___",
+        "blankAnswer": "répète"
       },
-      {
+      {Sa rengaine insolente qui s'entête et 
         "text": "Oh ne me quitte pas"
       },
       {
@@ -128,6 +130,8 @@
       },
       {
         "text": "Ingrate et solitaire marche et rêve dans les neiges en oubliant le froid"
+        "blankTemplate": "Ingrate et solitaire marche et rêve dans les neiges ___",
+        "blankAnswer": "en oubliant le froid"
       },
       {
         "text": "Si je la maquille"
